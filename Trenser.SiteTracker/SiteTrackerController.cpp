@@ -168,4 +168,23 @@ void SiteTrackerController::addEngineer()
 void SiteTrackerController::ownerMenu(string name)
 {
 	cout << "\nHai " << name << endl;
+	int choice = 1;
+	while (choice != 0)
+	{
+		cout << "\n1.Send site Request to Admin\n2.View Status of Site\n Enter your choice: ";
+		cin >> choice;
+		switch (choice)
+		{
+		case 1:
+			cout << "Site Id: ";
+			cin >> m_id;
+			cout << "\nLocation: ";
+			cin >> m_location;
+			cout << "Area of Square feet: ";
+			cin >> m_area;
+			cout << "Site Owner Name: ";
+			cin >> m_owner;
+			m_admin.addNewSite(m_id, m_location, m_area, m_owner, 1);
+		}
+	}
 }
