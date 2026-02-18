@@ -134,7 +134,8 @@ void SiteTrackerController::assignEngineerToSite()
 	cout << "Enter the Engineer ID: ";
 	cin >> m_engineerID;
 	cout << endl;
-	m_admin.assignEngineer(m_siteId, m_engineerID);
+	string result= m_admin.assignEngineer(m_siteId, m_engineerID);
+	cout << result;
 }
 void SiteTrackerController::addSite()
 {

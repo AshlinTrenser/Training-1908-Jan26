@@ -26,7 +26,7 @@ public:
 	vector<User*>& getEngineers();
 
 	vector<Site*> getSite();
-	void assignEngineer(string siteId,string engineerId);
+	string assignEngineer(string siteId,string engineerId);
 	void viewStatus();
 };
 

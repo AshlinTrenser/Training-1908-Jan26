@@ -24,19 +24,29 @@ void Admin::addEngineer(string name, string phone, string id, string username, s
 {
 	m_engineers.push_back(new Engineer(name, phone, id, username, password));
 }
-void Admin::assignEngineer(string siteId, string engineerId)
+string Admin::assignEngineer(string siteId, string engineerId)
 {
+	Engineer* foundEngineer = nullptr;
+	Site* foundSite = nullptr;
 	for (auto engineer : m_engineers)
 	{
 		if (engineer->getId() == engineerId)
 		{
-			engineer->setSiteId(siteId);
-			assignSite.setEngineer(engineer->getName());
-			cout << "\nEngineer " << engineer->getName() << " has been assigned to site " << siteId;
-			return;
+			foundEngineer = engineer;
+			break;
 		}
 	}
-	cout << "\nEngineer not found!\n\n";
+	for (auto site : m_site)
+	{
+		if (site->getId() == siteId)
+		{
+			foundSite = site;
+			break;
+		}
+	}
+	foundEngineer->setSiteId(siteId);
+	foundSite->setEngineer(foundEngineer->getName());
+	return "Engineer assigned successfully";
 }
 vector<Site*> Admin::getSite()
 {
