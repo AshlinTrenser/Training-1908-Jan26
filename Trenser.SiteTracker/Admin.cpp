@@ -20,25 +20,25 @@ void Admin::addNewSite(string id, string location, float area, string owner, int
 {
 	m_site.push_back(new Site(id, location, area, owner, phase));
 }
-void Admin::viewSite()
-{
-
-}
 void Admin::addEngineer(string name, string phone, string id, string username, string password)
 {
 	m_engineers.push_back(new Engineer(name, phone, id, username, password));
 }
 void Admin::assignEngineer(string siteId, string engineerId)
 {
-	/*for (auto engineer : m_engineers)
+	for (auto engineer : m_engineers)
 	{
-		if (engineer.getId() == engineerId)
+		if (engineer->getId() == engineerId)
 		{
-			engineer.setSiteId(siteId);
-			assignSite.setEngineer(engineer.getName());
-			cout << "\nEngineer " << engineer.getName() << " has been assigned to site " << siteId;
+			engineer->setSiteId(siteId);
+			assignSite.setEngineer(engineer->getName());
+			cout << "\nEngineer " << engineer->getName() << " has been assigned to site " << siteId;
 			return;
 		}
-	}*/
+	}
 	cout << "\nEngineer not found!\n";
+}
+vector<Site*> Admin::getSite()
+{
+	return m_site;
 }

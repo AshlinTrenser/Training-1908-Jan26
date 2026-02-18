@@ -54,7 +54,7 @@ void SiteTrackerController::addUser()
 }
 void SiteTrackerController::loginUser()
 {
-	cout << "\nEmal: ";
+	cout << "\nEmail: ";
 	cin >> m_username;
 	cout << "Password: ";
 	cin >> m_password;
@@ -81,7 +81,7 @@ void SiteTrackerController::adminMenu(string name)
 	int choice = 1;
 	while (choice != 7)
 	{
-		cout << "\n1.Add new Site\n2.Add Engineern\n3.View Site\n4.View Status\n5.View Site Request\n6.Assign Engineer to Site\n7.exit";
+		cout << "\n1.Add new Site\n2.Add Engineer\n3.View Site\n4.View Status\n5.View Site Request\n6.Assign Engineer to Site\n7.exit";
 		cin >> choice;
 		switch (choice)
 		{
@@ -91,21 +91,45 @@ void SiteTrackerController::adminMenu(string name)
 		case 2:
 			addEngineer();
 			break;
-		case 6:
-			assignEngineerToSite();
+		case 3:
+			viewSite();
 			break;
 		case 4:
-			//view status
+			//addEngineer();
 			break;
 		case 5:
-			//view request
+			//viewSite();
+			break;
+		case 6:
+			assignEngineerToSite();
 			break;
 		}
 	}
 }
+void SiteTrackerController::viewSite()
+{
+	vector<Site*> sites = m_admin.getSite();
+	if (sites.empty())
+	{
+		cout << "\nNo sites!\n";
+		return;
+	}
+	int temp = 0;
+	cout << "\n---Sites List----\n";
+	for (auto site : sites)
+	{
+		cout << "Site " << temp + 1 << " details: \n";
+		cout << "\nSite ID: " << site->getId();
+		cout << "\nLocation: " << site->getLocation();
+		cout << "\nArea of Square feet: " << site->getArea();
+		cout << "\nOwner Name: " << site->getOwner();
+		cout << "\nEngineer: " << site->getEngineer();
+		cout << endl;
+	}
+}
 void SiteTrackerController::assignEngineerToSite()
 {
-	cout << "\nEntert the Site ID: ";
+	cout << "\nEnter the Site ID: ";
 	cin >> m_siteId;
 	cout << "Enter the Engineer ID: ";
 	cin >> m_engineerID;

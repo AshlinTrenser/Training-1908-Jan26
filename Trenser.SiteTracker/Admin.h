@@ -14,7 +14,7 @@ private:
 	string m_phone;
 	Site assignSite;
 	vector<Site*> m_site;
-	vector<User*> m_engineers;
+	vector<Engineer*> m_engineers;
 public:
 	Admin() :m_name{}, m_phone{} {}
 	Admin(string name, string phone, string username, string password);
@@ -25,7 +25,7 @@ public:
 	void addEngineer(string name,string phone,string id,string username,string password);
 	vector<User*>& getEngineers();
 
-	void viewSite();
+	vector<Site*> getSite();
 	void assignEngineer(string siteId,string engineerId);
 	void viewStatus();
 };
