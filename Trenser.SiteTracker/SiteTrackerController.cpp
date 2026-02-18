@@ -17,7 +17,6 @@ void SiteTrackerController::controllerMenu()
 			loginUser();
 			break;
 		case 3:
-			return;
 		}
 	}
 }
