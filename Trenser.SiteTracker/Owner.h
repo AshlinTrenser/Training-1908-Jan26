@@ -9,10 +9,10 @@ private:
 	string m_name;
 	string m_phone;
 public:
-	Owner();
+	Owner() {}
 	Owner(string name, string phone, string username, string password);
 	string getName();
 	string getPhone();
-	void menu() override;
+	string menu() override;
 };
 

@@ -17,58 +17,130 @@ void SiteTrackerController::controllerMenu()
 			loginUser();
 			break;
 		case 3:
+			return;
 		}
 	}
 }
 void SiteTrackerController::addUser()
 {
-	string name, username, password, repassword;
-	string phone;
-	int type;
 	cout << "Name: ";
 	cin.ignore();
-	getline(cin, name);
+	getline(cin, m_name);
 	cout << "Phone: ";
-	cin >> phone;
+	cin >> m_phone;
 	cout << "Email: ";
-	cin >> username;
+	cin >> m_username;
 	cout << "Enter Password: ";
-	cin >> password;
+	cin >> m_password;
 	cout << "Re-Enter the Password: ";
-	cin >> repassword;
-	if (password != repassword)
+	cin >> m_repassword;
+	if (m_password != m_repassword)
 	{
 		system("cls");
 		cout << "\nPassword mismatch! try again!\n";
 		addUser();
 		return;
 	}
-	cout << "\n1.Admin\n2.Owner\n";
-	cout << "\nUser Type: ";
-	cin >> type;
-	if (type == 1)//admin
+	cout << "\n1.Admin\n2.Owner\n\nUser Type: ";
+	cin >> m_type;
+	if (m_type == 1)
 	{
-		m_user.push_back(new Admin(name, phone, username, password));
+		m_user.push_back(new Admin(m_name, m_phone, m_username, m_password));
 	}
-	if (type == 2)//Owner
+	if (m_type == 2)
 	{
-		m_user.push_back(new Owner(name, phone, username, password));
+		m_user.push_back(new Owner(m_name, m_phone, m_username, m_password));
 	}
 }
 void SiteTrackerController::loginUser()
 {
-	string username, password;
-	cout << "\nUser Name: ";
-	cin >> username;
+	cout << "\nEmal: ";
+	cin >> m_username;
 	cout << "Password: ";
-	cin >> password;
+	cin >> m_password;
 	for (auto iterator = m_user.begin(); iterator != m_user.end(); iterator++)
 	{
-		if ((*iterator)->getUsername() == username && ((*iterator)->getPassword() == password))
+		if ((*iterator)->getUsername() == m_username && ((*iterator)->getPassword() == m_password))
 		{
-			(*iterator)->menu();
-			return;
+			string type=(*iterator)->menu();
+			if (type == "Owner")
+			{
+				ownerMenu((*iterator)->getName());
+			}
+			if (type == "Admin")
+			{
+				adminMenu((*iterator)->getName());
+			}
 		}
 	}
-	cout << "\nInvailed email or password!\n";
+
+}
+void SiteTrackerController::adminMenu(string name)
+{
+	cout << "\nHai " << name<<endl;
+	int choice = 1;
+	while (choice != 7)
+	{
+		cout << "\n1.Add new Site\n2.Add Engineern\n3.View Site\n4.View Status\n5.View Site Request\n6.Assign Engineer to Site\n7.exit";
+		cin >> choice;
+		switch (choice)
+		{
+		case 1:
+			addSite();
+			break;
+		case 2:
+			addEngineer();
+			break;
+		case 6:
+			assignEngineerToSite();
+			break;
+		case 4:
+			//view status
+			break;
+		case 5:
+			//view request
+			break;
+		}
+	}
+}
+void SiteTrackerController::assignEngineerToSite()
+{
+	cout << "\nEntert the Site ID: ";
+	cin >> m_siteId;
+	cout << "Enter the Engineer ID: ";
+	cin >> m_engineerID;
+	cout << endl;
+	m_admin.assignEngineer(m_siteId, m_engineerID);
+}
+void SiteTrackerController::addSite()
+{
+	cout << "Site Id: ";
+	cin >> m_id;
+	cout << "\nLocation: ";
+	cin >> m_location;
+	cout << "Area of Square feet: ";
+	cin >> m_area;
+	cout << "Owner Name: ";
+	cin >> m_owner;
+	cout << "Phase: ";
+	cin >> m_phase;
+	m_admin.addNewSite(m_id,m_location, m_area, m_owner,m_phase);
+}
+void SiteTrackerController::addEngineer()
+{
+	cout << "Name: ";
+	cin >> m_name;
+	cout << "ID: ";
+	cin >> m_id;
+	cout << "Email: ";
+	cin >> m_username;
+	cout << "Password: ";
+	cin >> m_password;
+	cout << "Phone: ";
+	cin >> m_phone;
+	m_admin.addEngineer(m_name, m_phone, m_id, m_username, m_password);
+}
+void SiteTrackerController::ownerMenu(string name)
+{
+	cout << "\nHai " << name << endl;
 }

@@ -1,18 +1,32 @@
 #pragma once
 #include<iostream>
+#include<vector>
 using namespace std;
 #include "User.h"
+#include "Site.h"
+#include "Status.h"
+#include "Engineer.h"
 class Admin:
 	public User
 {
 private:
 	string m_name;
 	string m_phone;
+	Site assignSite;
+	vector<Site*> m_site;
+	vector<User*> m_engineers;
 public:
-	Admin();
+	Admin() :m_name{}, m_phone{} {}
 	Admin(string name, string phone, string username, string password);
 	string getName();
 	string getPhone();
-	void menu() override;
+	string menu() override;
+	void addNewSite(string id, string location, float area, string owner, int phase);
+	void addEngineer(string name,string phone,string id,string username,string password);
+	vector<User*>& getEngineers();
+
+	void viewSite();
+	void assignEngineer(string siteId,string engineerId);
+	void viewStatus();
 };
 

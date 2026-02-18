@@ -1,17 +1,22 @@
 #pragma once
 #include<iostream>
 using namespace std;
-class Engineer
+#include "User.h"
+class Engineer: public User
 {
 private:
-	string m_name, m_username, m_passowrd;
-	int m_phone,m_id;
+	string m_name;
+	string m_phone,m_id;
+	string m_siteId;
 public:
-	Engineer(string name, int phone, int id, string username, string password) :m_name{ name }, m_phone{ phone }, m_id{id}, m_username { username }, m_passowrd{ password } {}
+	Engineer() {}
+	Engineer(string name, string phone, string id, string username, string password);
 	string getUserName();
 	string getPassword();
 	string getName();
-	int getPhone();
-	int getId();
+	string getPhone();
+	string getId();
+	string menu() override;
+	void setSiteId(string id);
 };
 
