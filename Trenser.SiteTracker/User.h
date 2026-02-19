@@ -19,6 +19,5 @@ public:
 	string getName();
 	string getUserType();
 	virtual string menu()= 0;
-	virtual ~User();
 };
 

@@ -36,3 +36,11 @@ int Site::getPhase()
 {
 	return m_phase;
 }
+void Site::updateStatus(string message)
+{
+	status.update(m_id, message);
+}
+string Site::getStatusMessage()
+{
+	return status.getMessage();
+}

@@ -20,9 +20,11 @@ void Admin::addNewSite(string id, string location, float area, string owner, int
 {
 	m_site.push_back(new Site(id, location, area, owner, phase));
 }
-void Admin::addEngineer(string name, string phone, string id, string username, string password)
+Engineer* Admin::createEngnieer(string name, string phone, string id, string username, string password)
 {
-	m_engineers.push_back(new Engineer(name, phone, id, username, password));
+	Engineer* eng = new Engineer(name, phone, id, username, password);
+	m_engineers.push_back(eng);
+	return new Engineer(name, phone, id, username, password);
 }
 string Admin::assignEngineer(string siteId, string engineerId)
 {
@@ -48,7 +50,27 @@ string Admin::assignEngineer(string siteId, string engineerId)
 	foundSite->setEngineer(foundEngineer->getName());
 	return "Engineer assigned successfully";
 }
-vector<Site*> Admin::getSite()
+vector<Site*>& Admin::getSite()
 {
 	return m_site;
+}
+vector<Engineer*> Admin::getEngineersList()
+{
+	return m_engineers;
+}
+string Admin::viewStatus(string siteID)
+{
+	for (auto site : m_site)
+	{
+		if (site->getId() == siteID)
+		{
+			string message = site->getStatusMessage();
+			if (message.empty())
+			{
+				return "No Status Updates";
+			}
+			return message;
+		}
+	}
+	return "Site Not Found";
 }

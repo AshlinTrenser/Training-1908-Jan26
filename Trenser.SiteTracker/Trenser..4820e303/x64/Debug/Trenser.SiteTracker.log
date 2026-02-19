@@ -1,2 +1,4 @@
 ﻿  SiteTrackerController.cpp
-  Trenser.SiteTracker.vcxproj -> C:\Users\Lenovo\OneDrive\Desktop\Trenser\Training-1908-Jan26\Trenser.SiteTracker\x64\Debug\Trenser.SiteTracker.exe
+C:\Users\1908\Desktop\Trenser.SiteTracker\Training-1908-Jan26\Trenser.SiteTracker\SiteTrackerController.cpp(97,17): warning C4144: '!=': relational expression as switch expression
+C:\Users\1908\Desktop\Trenser.SiteTracker\Training-1908-Jan26\Trenser.SiteTracker\SiteTrackerController.cpp(109,3): warning C4808: case '2' is not a valid value for switch condition of type 'bool'
+  Trenser.SiteTracker.vcxproj -> C:\Users\1908\Desktop\Trenser.SiteTracker\Training-1908-Jan26\Trenser.SiteTracker\x64\Debug\Trenser.SiteTracker.exe

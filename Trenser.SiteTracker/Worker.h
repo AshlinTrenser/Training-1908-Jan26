@@ -5,8 +5,15 @@ class Worker
 {
 private:
 	string m_workerName, m_role;
-	int m_id, m_siteId, m_age;
+	string m_id, m_siteId;
+	int m_age;
 public:
-	Worker(int id, string name, string role, int age, int siteId) :m_id{ id }, m_workerName{ name }, m_role{ role }, m_age{ age }, m_siteId{ siteId } {}
+	Worker(string id, string name, string role, int age, string siteId) 
+		:m_id{ id }, m_workerName{ name }, m_role{ role }, m_age{ age }, m_siteId{ siteId } {}
+	string getName();
+	string getRole();
+	string getId();
+	string getSiteID();
+	int getAge();
 };
 

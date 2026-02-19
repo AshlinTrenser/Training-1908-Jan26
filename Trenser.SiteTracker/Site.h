@@ -2,12 +2,14 @@
 #include<iostream>
 #include<vector>
 using namespace std;
+#include "Status.h"
 class Site
 {
 private:
 	string m_owner,m_location,m_engineer, m_id;
 	float m_area;
 	int m_phase;
+	Status status;
 public:
 	Site() :m_id{}, m_owner{}, m_location{}, m_engineer{}, m_area{}, m_phase{} {}
 	Site(string id, string location, float area, string owner,int phase);
@@ -18,4 +20,6 @@ public:
 	string getId();
 	float getArea();
 	int getPhase();
+	void updateStatus(string message);
+	string getStatusMessage();
 };

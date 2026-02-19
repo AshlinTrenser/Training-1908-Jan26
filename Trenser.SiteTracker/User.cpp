@@ -1,5 +1,4 @@
 #include "User.h"
-
 string User::getPassword()
 {
 	return m_password;
@@ -15,8 +14,4 @@ string User::getUserType()
 string User::getName()
 {
 	return m_name;
-}
-User::~User()
-{
-
 }

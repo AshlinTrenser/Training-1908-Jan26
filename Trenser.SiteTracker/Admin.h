@@ -22,11 +22,10 @@ public:
 	string getPhone();
 	string menu() override;
 	void addNewSite(string id, string location, float area, string owner, int phase);
-	void addEngineer(string name,string phone,string id,string username,string password);
-	vector<User*>& getEngineers();
-
-	vector<Site*> getSite();
+	Engineer* createEngnieer(string name, string phone, string id, string username, string password);
 	string assignEngineer(string siteId,string engineerId);
-	void viewStatus();
+	vector<Engineer*> getEngineersList();
+	vector<Site*>& getSite();
+	string viewStatus(string siteID);
 };
 
