@@ -121,5 +121,8 @@
     <Text Include="Owner.txt">
       <Filter>FIles</Filter>
     </Text>
+    <Text Include="User.txt">
+      <Filter>FIles</Filter>
+    </Text>
   </ItemGroup>
 </Project>

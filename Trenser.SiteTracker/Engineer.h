@@ -31,9 +31,11 @@ public:
 	vector<Worker*> displayWorker();
 	void addMetrial(string name, string m_id, string siteID, int quantity);
 	vector<Material*> displayMatrial();
-	void addTask(string id, string description, string deadline, string status);
+	void addTask(string description, string deadline, string status);
 	vector<Task*> displayTask();
 	void addStatus(string id,string message,vector<Site*>& sites);
 	string viewStatus(string id, vector<Site*>& sites);
+	string updateSitePhase(string Id, int phase, vector<Site*>& sites);
+	string updateTaskStatus(string id, string status);
 };
 

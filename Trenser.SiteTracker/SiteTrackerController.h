@@ -39,5 +39,7 @@ public:
 	void viewTask();
 	void addStatus();
 	void viewStatus();
+	void updateSitePhase();
+	void updateTaskStatus();
 };
 

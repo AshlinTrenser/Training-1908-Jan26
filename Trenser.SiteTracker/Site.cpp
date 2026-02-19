@@ -44,3 +44,7 @@ string Site::getStatusMessage()
 {
 	return status.getMessage();
 }
+void Site::setPhase(int phase)
+{
+	m_phase = phase;
+}

@@ -24,7 +24,7 @@ Engineer* Admin::createEngnieer(string name, string phone, string id, string use
 {
 	Engineer* eng = new Engineer(name, phone, id, username, password);
 	m_engineers.push_back(eng);
-	return new Engineer(name, phone, id, username, password);
+	return eng;
 }
 string Admin::assignEngineer(string siteId, string engineerId)
 {
@@ -46,6 +46,10 @@ string Admin::assignEngineer(string siteId, string engineerId)
 			break;
 		}
 	}
+	if (!foundEngineer || !foundSite)
+	{
+		return "ID is not in your Data Base, Try another one!";
+	}
 	foundEngineer->setSiteId(siteId);
 	foundSite->setEngineer(foundEngineer->getName());
 	return "Engineer assigned successfully";
@@ -53,6 +57,10 @@ string Admin::assignEngineer(string siteId, string engineerId)
 vector<Site*>& Admin::getSite()
 {
 	return m_site;
+}
+vector<Task*>& Admin::getTask()
+{
+	return m_task;
 }
 vector<Engineer*> Admin::getEngineersList()
 {

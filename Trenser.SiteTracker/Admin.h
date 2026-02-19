@@ -14,6 +14,7 @@ private:
 	string m_phone;
 	Site assignSite;
 	vector<Site*> m_site;
+	vector<Task*> m_task;
 	vector<Engineer*> m_engineers;
 public:
 	Admin() :m_name{}, m_phone{} {}
@@ -26,6 +27,7 @@ public:
 	string assignEngineer(string siteId,string engineerId);
 	vector<Engineer*> getEngineersList();
 	vector<Site*>& getSite();
+	vector<Task*>& getTask();
 	string viewStatus(string siteID);
 };
 

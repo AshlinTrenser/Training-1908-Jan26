@@ -22,4 +22,5 @@ public:
 	int getPhase();
 	void updateStatus(string message);
 	string getStatusMessage();
+	void setPhase(int phase);
 };

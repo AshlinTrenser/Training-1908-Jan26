@@ -45,9 +45,9 @@ vector<Material*> Engineer::displayMatrial()
 {
 	return m_material;
 }
-void Engineer::addTask(string id, string description, string deadline, string status)
+void Engineer::addTask( string description, string deadline, string status)
 {
-	m_task.push_back(new Task(id, description,deadline, status));
+	m_task.push_back(new Task(description,deadline, status));
 }
 vector<Task*> Engineer::displayTask()
 {
@@ -74,4 +74,28 @@ string Engineer::viewStatus(string id, vector<Site*>& sites)
 		}
 	}
 	return "No Status Found!";
+}
+string Engineer::updateSitePhase(string id, int phase, vector<Site*>& sites)
+{
+	for (auto site : sites)
+	{
+		if (site->getId() == id)
+		{
+			site->setPhase(phase);
+			return "\nThe Site Phase has been updated!";
+		}
+	}
+	return "\nThe site ID is not in the Data base try another one!";
+}
+string Engineer::updateTaskStatus(string id, string status)
+{
+	for (auto task : m_task)
+	{
+		if (task->getId() == id)
+		{
+			task->updateStatus(status);
+			return "\nTask Updated";
+		}
+	}
+	return "\nTask Id not in your database, Try another one!";
 }

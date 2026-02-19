@@ -157,6 +157,7 @@
     <Text Include="Site.txt" />
     <Text Include="Status.txt" />
     <Text Include="Task.txt" />
+    <Text Include="User.txt" />
     <Text Include="Worker.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

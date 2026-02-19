@@ -18,16 +18,16 @@ void SiteTrackerController::controllerMenu()
 			loginUser();
 			break;
 		case 3:
-			return;
+			break;
 		default:
-			cout << "Invailed input! try again";
+			cout << "Invalid input! try again";
 			break;
 		}
 	}
 }
 void SiteTrackerController::addUser()
 {
-	system("cls");
+	system("cls");		
 	cout << "Name: ";
 	cin.ignore();
 	getline(cin, m_name);
@@ -64,6 +64,11 @@ void SiteTrackerController::loginUser()
 	cin >> m_username;
 	cout << "Password: ";
 	cin >> m_password;
+	if (m_user.empty())
+	{
+		cout << "\nNo Users are registered. Please register\n";
+		return;
+	}
 	for (auto iterator = m_user.begin(); iterator != m_user.end(); iterator++)
 	{
 		if ((*iterator)->getUsername() == m_username && ((*iterator)->getPassword() == m_password))
@@ -108,8 +113,9 @@ void SiteTrackerController::ownerMenu(string name)
 			m_admin.addNewSite(m_id, m_location, m_area, m_owner, 1);
 		case 2:
 			viewStatus();
+			break;
 		default:
-			cout << "Invailed input! try again";
+			cout << "Invalid input! try again";
 			break;
 		}
 	}
@@ -144,7 +150,7 @@ void SiteTrackerController::adminMenu(string name)
 			assignEngineerToSite();
 			break;
 		default:
-			cout << "Invailed input! try again";
+			cout << "Invalid input! try again";
 			break;
 		}
 	}
@@ -154,9 +160,9 @@ void SiteTrackerController::engineerMenu(string name)
 	system("cls");
 	cout << "\nEngineer: " << name << endl;
 	int choice = 1;
-	while (choice != 9)
+	while (choice != 11)
 	{
-		cout << "\n1.Add works\n2.Add Site status\n3.Add Materials\n4.Add Task\n5.View workers\n6.View site status\n7.View Materials\n8.View Task\n9.Logout\nEnter you choice: ";
+		cout << "\n1.Add works\n2.Add Site status\n3.Add Materials\n4.Add Task\n5.View workers\n6.View site status\n7.View Materials\n8.View Task\n9.Update Site Phase\n10.Update Task Status\n11.Logout\nEnter you choice: ";
 		cin >> choice;
 		switch (choice)
 		{
@@ -184,11 +190,38 @@ void SiteTrackerController::engineerMenu(string name)
 		case 8:
 			viewTask();
 			break;
+		case 9:
+			updateSitePhase();
+			break;
+		case 10:
+			updateTaskStatus();
+			break;
 		default:
-			cout << "Invailed input! try again";
+			cout << "Invalid input! try again";
 			break;
 		}
 	}
+}
+void SiteTrackerController::updateTaskStatus()
+{
+	viewTask();
+	cout << endl<<"\n Which Task you want to change!";
+	cout << "\nEnter the Task ID: ";
+	cin >> m_id;
+	cout << "Status: ";
+	cin.ignore();
+	getline(cin, m_status);
+	string result = m_engineerPurpose.updateTaskStatus(m_id, m_status);
+	cout << result << endl<<endl;
+}
+void SiteTrackerController::updateSitePhase()
+{
+	cout << "Enter the Site ID: ";
+	cin >> m_id;
+	cout << "Phase: ";
+	cin >> m_phase;
+	string result=m_engineerPurpose.updateSitePhase(m_id, m_phase,m_admin.getSite());
+	cout << result<<endl<<endl;
 }
 void SiteTrackerController::addStatus()
 {
@@ -215,21 +248,24 @@ void SiteTrackerController::viewStatus()
 void SiteTrackerController::addTask()
 {
 	system("cls");
-	cout << "Task ID: ";
-	cin >> m_id;
 	cout << "Task Description: ";
 	cin >> m_description;
 	cout << "Dead Line: ";
 	cin >> m_deadline;
 	cout << "Status: ";
 	cin >> m_status;
-	m_engineerPurpose.addTask(m_id, m_description, m_deadline, m_status);
+	m_engineerPurpose.addTask( m_description, m_deadline, m_status);
 }
 void SiteTrackerController::viewTask()
 {
 	system("cls");
 	cout << "\n---Task Details---\n";
 	vector<Task*> task = m_engineerPurpose.displayTask();
+	if (task.empty())
+	{
+		cout << "\nNo Task Added!";
+		return;
+	}
 	for (auto details : task)
 	{
 		cout << "Task ID: " << details->getId()<<endl;
@@ -256,6 +292,11 @@ void  SiteTrackerController::viewMaterials()
 	system("cls");
 	cout << "\n---Materials Details---\n";
 	vector<Material*> material = m_engineerPurpose.displayMatrial();
+	if (material.empty())
+	{
+		cout << "\nNo Materials Are Added!";
+		return;
+	}
 	for (auto details : material)
 	{
 		cout << "\nMaterial Name: " << details->getName();
@@ -269,6 +310,11 @@ void SiteTrackerController::viewWorkers()
 	system("cls");
 	cout << "\n---Worker Details---\n";
 	vector<Worker*> worker = m_engineerPurpose.displayWorker();
+	if (worker.empty())
+	{
+		cout << "\nNo Workers Added\n";
+		return;
+	}
 	for (auto user : worker)
 	{
 		cout << "\nName: " << user->getName();
@@ -287,7 +333,7 @@ void SiteTrackerController::addWorkers()
 	cin >> m_name;
 	cout << "Worker Role: ";
 	cin >> m_role;
-	cout << "WOrker Age: ";
+	cout << "Worker Age: ";
 	cin >> m_age;
 	cout << "Site ID: ";
 	cin >> m_siteId;
@@ -327,6 +373,7 @@ void SiteTrackerController::viewSite()
 		cout << "\nLocation: " << site->getLocation();
 		cout << "\nArea of Square feet: " << site->getArea();
 		cout << "\nOwner Name: " << site->getOwner();
+		cout << "\nSite Phase: " << site->getPhase();
 		cout << "\nEngineer: " << site->getEngineer() << endl << endl<<endl;
 	}
 }
@@ -339,7 +386,7 @@ void SiteTrackerController::assignEngineerToSite()
 	cin >> m_engineerID;
 	cout << endl;
 	string result= m_admin.assignEngineer(m_siteId, m_engineerID);
-	cout << result;
+	cout << result<<endl<<endl;
 }
 void SiteTrackerController::addSite()
 {
