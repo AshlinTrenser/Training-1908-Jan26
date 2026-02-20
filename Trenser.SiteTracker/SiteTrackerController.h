@@ -30,7 +30,6 @@ public:
 	void viewSite();
 	void assignEngineerToSite();
 	void viewEngnieers();
-	//void viewSiteRequest();
 	void viewWorkers();
 	void addWorkers();
 	void addMaterial();
@@ -41,5 +40,6 @@ public:
 	void viewStatus();
 	void updateSitePhase();
 	void updateTaskStatus();
+	void deleteSite();
 };
 

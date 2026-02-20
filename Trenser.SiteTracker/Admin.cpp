@@ -16,13 +16,13 @@ string Admin::menu()
 {
 	return "Admin";
 }
-void Admin::addNewSite(string id, string location, float area, string owner, int phase)
+void Admin::addNewSite(string location, float area, string owner, int phase)
 {
-	m_site.push_back(new Site(id, location, area, owner, phase));
+	m_site.push_back(new Site(location, area, owner, phase));
 }
-Engineer* Admin::createEngnieer(string name, string phone, string id, string username, string password)
+Engineer* Admin::createEngnieer(string name, string phone, string username, string password)
 {
-	Engineer* eng = new Engineer(name, phone, id, username, password);
+	Engineer* eng = new Engineer(name, phone, username, password);
 	m_engineers.push_back(eng);
 	return eng;
 }
@@ -81,4 +81,17 @@ string Admin::viewStatus(string siteID)
 		}
 	}
 	return "Site Not Found";
+}
+bool Admin::deleteSite(string id)
+{
+	for (auto iterator = m_site.begin(); iterator != m_site.end(); iterator++)
+	{
+		if ((*iterator)->getId() == id)
+		{
+			delete *iterator;
+			m_site.erase(iterator);
+			return true;
+		}
+	}
+	return false;
 }

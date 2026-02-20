@@ -25,71 +25,6 @@ void SiteTrackerController::controllerMenu()
 		}
 	}
 }
-void SiteTrackerController::addUser()
-{
-	system("cls");		
-	cout << "Name: ";
-	cin.ignore();
-	getline(cin, m_name);
-	cout << "Phone: ";
-	cin >> m_phone;
-	cout << "Email: ";
-	cin >> m_username;
-	cout << "Enter Password: ";
-	cin >> m_password;
-	cout << "Re-Enter the Password: ";
-	cin >> m_repassword;
-	if (m_password != m_repassword)
-	{
-		system("cls");
-		cout << "\nPassword mismatch! try again!\n";
-		addUser();
-		return;
-	}
-	cout << "\n1.Admin\n2.Owner\n\nUser Type: ";
-	cin >> m_type;
-	if (m_type == 1)
-	{
-		m_user.push_back(new Admin(m_name, m_phone, m_username, m_password));
-	}
-	if (m_type == 2)
-	{
-		m_user.push_back(new Owner(m_name, m_phone, m_username, m_password));
-	}
-}
-void SiteTrackerController::loginUser()
-{
-	system("cls");
-	cout << "\nEmail: ";
-	cin >> m_username;
-	cout << "Password: ";
-	cin >> m_password;
-	if (m_user.empty())
-	{
-		cout << "\nNo Users are registered. Please register\n";
-		return;
-	}
-	for (auto iterator = m_user.begin(); iterator != m_user.end(); iterator++)
-	{
-		if ((*iterator)->getUsername() == m_username && ((*iterator)->getPassword() == m_password))
-		{
-			string type=(*iterator)->menu();
-			if (type == "Owner")
-			{
-				ownerMenu((*iterator)->getName());
-			}
-			else if (type == "Admin")
-			{
-				adminMenu((*iterator)->getName());
-			}
-			else if (type == "Engineer")
-			{
-				engineerMenu((*iterator)->getName());
-			}
-			return;
-		}
-	}
-}
 void SiteTrackerController::ownerMenu(string name)
 {
 	system("cls");
@@ -99,20 +34,23 @@ void SiteTrackerController::ownerMenu(string name)
 	{
 		cout << "\n1.Send site Request to Admin\n2.View Status of Site\n3.Logout\n Enter your choice: ";
 		cin >> choice;
-		switch (choice!=3)
+		switch (choice)
 		{
 		case 1:
-			cout << "Site Id: ";
-			cin >> m_id;
-			cout << "\nLocation: ";
+			system("cls");
+			cout << "\nLocation         : ";
 			cin >> m_location;
 			cout << "Area of Square feet: ";
 			cin >> m_area;
-			cout << "Site Owner Name: ";
-			cin >> m_owner;
-			m_admin.addNewSite(m_id, m_location, m_area, m_owner, 1);
+			cout << "Site Owner Name    : ";
+			cin.ignore();
+			getline(cin, m_owner);
+			m_admin.addNewSite(m_location, m_area, m_owner, 1);
+			break;
 		case 2:
 			viewStatus();
+			break;
+		case 3:
 			break;
 		default:
 			cout << "Invalid input! try again";
@@ -125,9 +63,9 @@ void SiteTrackerController::adminMenu(string name)
 	system("cls");
 	cout << "\nAdmin: " << name << endl;
 	int choice = 1;
-	while (choice != 7)
+	while (choice != 10)
 	{
-		cout << "\n1.Add new Site\n2.Add Engineer\n3.View Site\n4.View Engineers\n5.View Site Status\n6.Assign Engineer to Site\n7.exit";
+		cout << "\n1.Add new Site\n2.Add Engineer\n3.View Site\n4.View Engineers\n5.View Site Status\n6.Assign Engineer to Site\n7.Add Task\n8.Delete Site\n9.View Task\n10.Logout\n Enter your choice: ";
 		cin >> choice;
 		switch (choice)
 		{
@@ -148,6 +86,17 @@ void SiteTrackerController::adminMenu(string name)
 			break;
 		case 6:
 			assignEngineerToSite();
+			break;
+		case 7:
+			addTask();
+			break;
+		case 8:
+			deleteSite();
+			break;
+		case 9:
+			viewTask();
+			break;
+		case 10:
 			break;
 		default:
 			cout << "Invalid input! try again";
@@ -202,13 +151,78 @@ void SiteTrackerController::engineerMenu(string name)
 		}
 	}
 }
+void SiteTrackerController::addUser()
+{
+	system("cls");		
+	cout << "Name                 : ";
+	cin.ignore();
+	getline(cin, m_name);
+	cout << "Phone                : ";
+	cin >> m_phone;
+	cout << "Email                : ";
+	cin >> m_username;
+	cout << "Enter Password       : ";
+	cin >> m_password;
+	cout << "Re-Enter the Password: ";
+	cin >> m_repassword;
+	if (m_password != m_repassword)
+	{
+		system("cls");
+		cout << "\nPassword mismatch! try again!\n";
+		addUser();
+		return;
+	}
+	cout << "\n1.Admin\n2.Owner\n\nUser Type: ";
+	cin >> m_type;
+	if (m_type == 1)
+	{
+		m_user.push_back(new Admin(m_name, m_phone, m_username, m_password));
+	}
+	if (m_type == 2)
+	{
+		m_user.push_back(new Owner(m_name, m_phone, m_username, m_password));
+	}
+}
+void SiteTrackerController::loginUser()
+{
+	system("cls");
+	cout << "\nEmail : ";
+	cin >> m_username;
+	cout << "Password: ";
+	cin >> m_password;
+	if (m_user.empty())
+	{
+		cout << "\nNo Users are registered. Please register\n";
+		return;
+	}
+	for (auto iterator = m_user.begin(); iterator != m_user.end(); iterator++)
+	{
+		if ((*iterator)->getUsername() == m_username && ((*iterator)->getPassword() == m_password))
+		{
+			string type=(*iterator)->menu();
+			if (type == "Owner")
+			{
+				ownerMenu((*iterator)->getName());
+			}
+			else if (type == "Admin")
+			{
+				adminMenu((*iterator)->getName());
+			}
+			else if (type == "Engineer")
+			{
+				engineerMenu((*iterator)->getName());
+			}
+			return;
+		}
+	}
+}
 void SiteTrackerController::updateTaskStatus()
 {
 	viewTask();
 	cout << endl<<"\n Which Task you want to change!";
 	cout << "\nEnter the Task ID: ";
 	cin >> m_id;
-	cout << "Status: ";
+	cout << "Status             : ";
 	cin.ignore();
 	getline(cin, m_status);
 	string result = m_engineerPurpose.updateTaskStatus(m_id, m_status);
@@ -216,21 +230,24 @@ void SiteTrackerController::updateTaskStatus()
 }
 void SiteTrackerController::updateSitePhase()
 {
+	viewSite();
 	cout << "Enter the Site ID: ";
 	cin >> m_id;
-	cout << "Phase: ";
+	cout << "Phase            : ";
 	cin >> m_phase;
 	string result=m_engineerPurpose.updateSitePhase(m_id, m_phase,m_admin.getSite());
-	cout << result<<endl<<endl;
+	cout <<endl<< result<<endl<<endl;
 }
 void SiteTrackerController::addStatus()
 {
 	system("cls");
 	cout << "\nEnter the site ID: ";
 	cin >> m_siteId;
-	cout << "\nEnter the ReMark: ";
-	cin >> m_message;
-	m_engineerPurpose.addStatus(m_siteId,m_message,m_admin.getSite());
+	cout << "\nEnter the ReMark : ";
+	cin.ignore();
+	getline(cin, m_message);
+	string result=m_engineerPurpose.addStatus(m_siteId,m_message,m_admin.getSite());
+	cout << "\n" << result << "\n\n";
 }
 void SiteTrackerController::viewStatus()
 {
@@ -243,18 +260,28 @@ void SiteTrackerController::viewStatus()
 		cout << "\nNo Updates!\n";
 		return;
 	}
-	cout << endl << "Here is the status: " << m_message;
+	cout << endl << "Here is the status : " << m_message;
 }
 void SiteTrackerController::addTask()
 {
 	system("cls");
 	cout << "Task Description: ";
-	cin >> m_description;
-	cout << "Dead Line: ";
+	cin.ignore();
+	getline(cin, m_description);
+	cout << "Dead Line       : ";
 	cin >> m_deadline;
-	cout << "Status: ";
-	cin >> m_status;
-	m_engineerPurpose.addTask( m_description, m_deadline, m_status);
+	cout << "Status          : ";
+	cin.ignore();
+	getline(cin, m_status);
+	cout << "Site ID: ";
+	cin >> m_siteId;
+	bool found = m_engineerPurpose.checkSiteID(m_siteId, m_admin.getSite());
+	if (!found)
+	{
+		cout << "\nThe Site Id is NOT in your database!\n\n";
+		return;
+	}
+	m_engineerPurpose.addTask( m_description, m_deadline, m_status,m_siteId);
 }
 void SiteTrackerController::viewTask()
 {
@@ -268,10 +295,11 @@ void SiteTrackerController::viewTask()
 	}
 	for (auto details : task)
 	{
-		cout << "Task ID: " << details->getId()<<endl;
+		cout << "Task ID         : " << details->getId()<<endl;
 		cout << "Task Description: " << details->getDescription()<<endl;
-		cout << "Task dead line: " << details->getDeadline()<<endl;
-		cout << "Task status: " << details->getStatus()<<endl<<endl;
+		cout << "Task dead line  : " << details->getDeadline()<<endl;
+		cout << "Task status     : " << details->getStatus() << endl;
+		cout << "Site Id         :" << details->getSiteID() << endl << endl;
 	}
 }
 void SiteTrackerController::addMaterial()
@@ -279,13 +307,17 @@ void SiteTrackerController::addMaterial()
 	system("cls");
 	cout << "\n Materials Name: ";
 	cin >> m_name;
-	cout << "Material Id: ";
-	cin >> m_id;
-	cout << "Site ID: ";
+	cout << "Site ID          : ";
 	cin >> m_siteId;
-	cout << "Quantity: ";
+	bool found = m_engineerPurpose.checkSiteID(m_siteId, m_admin.getSite());
+	if (!found)
+	{
+		cout << "\nThe Site Id is NOT in your database!\n\n";
+		return;
+	}
+	cout << "Quantity         : ";
 	cin >> m_quantity;
-	m_engineerPurpose.addMetrial(m_name, m_id, m_siteId, m_quantity);
+	m_engineerPurpose.addMetrial(m_name, m_siteId, m_quantity);
 }
 void  SiteTrackerController::viewMaterials()
 {
@@ -300,9 +332,9 @@ void  SiteTrackerController::viewMaterials()
 	for (auto details : material)
 	{
 		cout << "\nMaterial Name: " << details->getName();
-		cout << "\nMaterial ID: " << details->getId();
-		cout << "\nSite ID: " << details->getSiteID();
-		cout << "\nQuantity: " << details->getQuantity() << endl;
+		cout << "\nMaterial ID  : " << details->getId();
+		cout << "\nSite ID      : " << details->getSiteID();
+		cout << "\nQuantity     : " << details->getQuantity() << endl;
 	}
 }
 void SiteTrackerController::viewWorkers()
@@ -317,27 +349,26 @@ void SiteTrackerController::viewWorkers()
 	}
 	for (auto user : worker)
 	{
-		cout << "\nName: " << user->getName();
-		cout << "\nRole: " << user->getRole();
-		cout << "\nID: " << user->getId();
+		cout << "\nName   : " << user->getName();
+		cout << "\nRole   : " << user->getRole();
+		cout << "\nID     : " << user->getId();
 		cout << "\nSite ID: " << user->getSiteID();
-		cout << "\nAge: " << user->getAge()<<endl;
+		cout << "\nAge    : " << user->getAge()<<endl;
 	}
 }
 void SiteTrackerController::addWorkers()
 {
 	system("cls");
-	cout << "\nWorker ID: ";
-	cin >> m_id;
-	cout << "Worker Name: ";
-	cin >> m_name;
-	cout << "Worker Role: ";
+	cout << "Worker Name : ";
+	cin.ignore();
+	getline(cin, m_name);
+	cout << "Worker Role : ";
 	cin >> m_role;
-	cout << "Worker Age: ";
+	cout << "Worker Age  : ";
 	cin >> m_age;
-	cout << "Site ID: ";
+	cout << "Site ID     : ";
 	cin >> m_siteId;
-	m_engineerPurpose.addWorker(m_id, m_name, m_role, m_age, m_siteId);
+	m_engineerPurpose.addWorker(m_name, m_role, m_age, m_siteId);
 }
 void SiteTrackerController::viewEngnieers()
 {
@@ -351,9 +382,9 @@ void SiteTrackerController::viewEngnieers()
 	cout << "\n---Engineer List---\n";
 	for (auto user : engineerList)
 	{
-		cout << "Engineer ID: " << user->getId()<<endl;
-		cout << "Engineer Name: " << user->getName()<<endl;
-		cout << "Engineer Phone: " << user->getPhone()<<endl;
+		cout << "Engineer ID              : " << user->getId()<<endl;
+		cout << "Engineer Name            : " << user->getName()<<endl;
+		cout << "Engineer Phone           : " << user->getPhone()<<endl;
 		cout << "Engineer Assigned Site ID: " << user->getSiteId()<<endl << endl << endl;;
 	}
 }
@@ -369,18 +400,18 @@ void SiteTrackerController::viewSite()
 	cout << "\n---Sites List----\n";
 	for (auto site : sites)
 	{
-		cout << "\nSite ID: " << site->getId();
-		cout << "\nLocation: " << site->getLocation();
+		cout << "\nSite ID            : " << site->getId();
+		cout << "\nLocation           : " << site->getLocation();
 		cout << "\nArea of Square feet: " << site->getArea();
-		cout << "\nOwner Name: " << site->getOwner();
-		cout << "\nSite Phase: " << site->getPhase();
-		cout << "\nEngineer: " << site->getEngineer() << endl << endl<<endl;
+		cout << "\nOwner Name         : " << site->getOwner();
+		cout << "\nSite Phase         : " << site->getPhase();
+		cout << "\nEngineer           : " << site->getEngineer() << endl << endl<<endl;
 	}
 }
 void SiteTrackerController::assignEngineerToSite()
 {
 	system("cls");
-	cout << "\nEnter the Site ID: ";
+	cout << "\nEnter the Site ID  : ";
 	cin >> m_siteId;
 	cout << "Enter the Engineer ID: ";
 	cin >> m_engineerID;
@@ -391,31 +422,40 @@ void SiteTrackerController::assignEngineerToSite()
 void SiteTrackerController::addSite()
 {
 	system("cls");
-	cout << "Site Id: ";
-	cin >> m_id;
-	cout << "Location: ";
+	cout << "Location           : ";
 	cin >> m_location;
 	cout << "Area of Square feet: ";
 	cin >> m_area;
-	cout << "Owner Name: ";
-	cin >> m_owner;
-	cout << "Phase: ";
+	cout << "Owner Name         : ";
+	cin.ignore();
+	getline(cin,m_owner);
+	cout << "Phase              : ";
 	cin >> m_phase;
-	m_admin.addNewSite(m_id,m_location, m_area, m_owner,m_phase);
+	m_admin.addNewSite(m_location, m_area, m_owner,m_phase);
 }
 void SiteTrackerController::addEngineer()
 {
 	system("cls");
-	cout << "Name: ";
-	cin >> m_name;
-	cout << "ID: ";
-	cin >> m_id;
-	cout << "Email: ";
+	cout << "Name    : ";
+	cin.ignore();
+	getline(cin, m_name);
+	cout << "Email   : ";
 	cin >> m_username;
 	cout << "Password: ";
 	cin >> m_password;
-	cout << "Phone: ";
+	cout << "Phone   : ";
 	cin >> m_phone;
-	Engineer* engineer = m_admin.createEngnieer(m_name, m_phone, m_id, m_username, m_password);
+	Engineer* engineer = m_admin.createEngnieer(m_name, m_phone, m_username, m_password);
 	m_user.push_back(engineer);
+}
+void SiteTrackerController::deleteSite()
+{
+	system("cls");
+	cout << "\nEnter the site ID to delete: ";
+	cin >> m_id;
+	bool isDeleted = m_admin.deleteSite(m_id);
+	if (isDeleted)
+	{
+		cout << "\n\n\Deleted Successfully!\n\n";
+	}
 }

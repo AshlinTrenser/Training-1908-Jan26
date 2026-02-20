@@ -1,6 +1,6 @@
 #include "Task.h"
 int Task::m_counter = 1;
-Task::Task(string description, string deadline, string status)
+Task::Task(string description, string deadline, string status, string siteID)
 {
 	if (m_counter < 10)
 	{
@@ -14,6 +14,7 @@ Task::Task(string description, string deadline, string status)
 	m_description = description;
 	m_deadline = deadline;
 	m_status = status;
+	m_siteID = siteID;
 }
 string Task::getId()
 {
@@ -34,4 +35,8 @@ string Task::getStatus()
 void Task::updateStatus(string newStatus)
 {
 	m_status = newStatus;
+}
+string Task::getSiteID()
+{
+	return m_siteID;
 }

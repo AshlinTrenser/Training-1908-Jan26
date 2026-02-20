@@ -1,6 +1,6 @@
 #pragma once
 #include<iostream>
-#include<map>
+#include<string>
 using namespace std;
 #include "User.h"
 #include "Material.h"
@@ -11,7 +11,7 @@ using namespace std;
 class Engineer: public User
 {
 private:
-
+	static int m_counter;
 	vector<Worker*> worker;
 	vector<Material*> m_material;
 	vector<Task*> m_task;
@@ -20,22 +20,23 @@ private:
 	string m_siteId;
 public:
 	Engineer() {}
-	Engineer(string name, string phone, string id, string username, string password);
+	Engineer(string name, string phone, string username, string password);
 	string getName();
 	string getPhone();
 	string getId();
 	string getSiteId();
 	string menu() override;
 	void setSiteId(string id);
-	void addWorker(string id, string name, string role, int age, string siteID);
+	void addWorker(string name, string role, int age, string siteID);
 	vector<Worker*> displayWorker();
-	void addMetrial(string name, string m_id, string siteID, int quantity);
+	void addMetrial(string name, string siteID, int quantity);
 	vector<Material*> displayMatrial();
-	void addTask(string description, string deadline, string status);
+	void addTask(string description, string deadline, string status, string siteID);
 	vector<Task*> displayTask();
-	void addStatus(string id,string message,vector<Site*>& sites);
+	string addStatus(string id,string message,vector<Site*>& sites);
 	string viewStatus(string id, vector<Site*>& sites);
 	string updateSitePhase(string Id, int phase, vector<Site*>& sites);
 	string updateTaskStatus(string id, string status);
+	bool checkSiteID(string id, vector<Site*>& sites);
 };
 

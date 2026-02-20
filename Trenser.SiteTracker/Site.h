@@ -1,6 +1,7 @@
 #pragma once
 #include<iostream>
 #include<vector>
+#include<string>
 using namespace std;
 #include "Status.h"
 class Site
@@ -10,9 +11,10 @@ private:
 	float m_area;
 	int m_phase;
 	Status status;
+	static int m_counter;
 public:
 	Site() :m_id{}, m_owner{}, m_location{}, m_engineer{}, m_area{}, m_phase{} {}
-	Site(string id, string location, float area, string owner,int phase);
+	Site(string location, float area, string owner,int phase);
 	void setEngineer(string name);
 	string getOwner();
 	string getLocation();

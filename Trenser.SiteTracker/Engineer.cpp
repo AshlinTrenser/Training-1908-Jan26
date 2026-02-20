@@ -1,9 +1,18 @@
 #include "Engineer.h"
-Engineer::Engineer(string name, string phone, string id, string username, string password) : User(username,password,"Engineer",name)
+int Engineer::m_counter = 1;
+Engineer::Engineer(string name, string phone, string username, string password) : User(username,password,"Engineer",name)
 {
+	if (m_counter < 10)
+	{
+		m_id = "E0" + to_string(m_counter);
+	}
+	else
+	{
+		m_id = "E" + to_string(m_counter);
+	}
+	m_counter++;
 	m_name = name;
 	m_phone = phone;
-	m_id = id;
 }
 string Engineer::getName()
 {
@@ -27,42 +36,47 @@ void Engineer::setSiteId(string id)
 }
 string Engineer::getSiteId()
 {
+	if (m_siteId.empty())
+	{
+		return "Not Assigned";
+	}
 	return m_siteId;
 }
-void Engineer::addWorker(string id, string name, string role, int age, string siteID)
+void Engineer::addWorker( string name, string role, int age, string siteID)
 {
-	worker.push_back(new Worker(id, name, role, age, siteID));
+	worker.push_back(new Worker(name, role, age, siteID));
 }
 vector<Worker*> Engineer::displayWorker()
 {
 	return worker;
 }
-void Engineer::addMetrial(string name, string id, string siteID, int quantity)
+void Engineer::addMetrial(string name, string siteID, int quantity)
 {
-	m_material.push_back(new Material(name, id, siteID, quantity));
+	m_material.push_back(new Material(name, siteID, quantity));
 }
 vector<Material*> Engineer::displayMatrial()
 {
 	return m_material;
 }
-void Engineer::addTask( string description, string deadline, string status)
+void Engineer::addTask( string description, string deadline, string status,string siteID)
 {
-	m_task.push_back(new Task(description,deadline, status));
+	m_task.push_back(new Task(description,deadline, status,siteID));
 }
 vector<Task*> Engineer::displayTask()
 {
 	return m_task;
 }
-void Engineer::addStatus(string id,string message,vector<Site*>& sites)
+string Engineer::addStatus(string id,string message,vector<Site*>& sites)
 {
 	for (auto site : sites)
 	{
 		if (site->getId() == id)
 		{
 			site->updateStatus(message);
-			return;
+			return "Status Added!";
 		}
 	}
+	return "Not Found!";
 }
 string Engineer::viewStatus(string id, vector<Site*>& sites)
 {
@@ -86,6 +100,17 @@ string Engineer::updateSitePhase(string id, int phase, vector<Site*>& sites)
 		}
 	}
 	return "\nThe site ID is not in the Data base try another one!";
+}
+bool Engineer::checkSiteID(string id, vector<Site*>& sites)
+{
+	for (auto site : sites)
+	{
+		if (site->getId() == id)
+		{
+			return true;
+		}
+	}
+	return false;
 }
 string Engineer::updateTaskStatus(string id, string status)
 {
