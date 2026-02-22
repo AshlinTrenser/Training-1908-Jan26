@@ -125,6 +125,7 @@
   <ItemGroup>
     <ClCompile Include="Admin.cpp" />
     <ClCompile Include="Engineer.cpp" />
+    <ClCompile Include="Exception.cpp" />
     <ClCompile Include="FileManager.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="Owner.cpp" />
@@ -139,6 +140,7 @@
   <ItemGroup>
     <ClInclude Include="Admin.h" />
     <ClInclude Include="Engineer.h" />
+    <ClInclude Include="Exception.h" />
     <ClInclude Include="FileManager.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="Owner.h" />

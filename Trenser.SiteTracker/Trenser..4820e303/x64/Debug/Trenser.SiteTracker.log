@@ -1,3 +1,5 @@
-﻿  SiteTrackerController.cpp
-C:\Users\1908\Desktop\Trenser.SiteTracker\Training-1908-Jan26\Trenser.SiteTracker\SiteTrackerController.cpp(459,11): warning C4129: 'D': unrecognized character escape sequence
-  Trenser.SiteTracker.vcxproj -> C:\Users\1908\Desktop\Trenser.SiteTracker\Training-1908-Jan26\Trenser.SiteTracker\x64\Debug\Trenser.SiteTracker.exe
+﻿  Admin.cpp
+  SiteTrackerController.cpp
+  Generating Code...
+C:\Users\Lenovo\OneDrive\Desktop\Trenser\Training-1908-Jan26\Trenser.SiteTracker\SiteTrackerController.cpp(307,72): error C2059: syntax error: '?'
+C:\Users\Lenovo\OneDrive\Desktop\Trenser\Training-1908-Jan26\Trenser.SiteTracker\SiteTrackerController.cpp(508,12): warning C4129: 'D': unrecognized character escape sequence

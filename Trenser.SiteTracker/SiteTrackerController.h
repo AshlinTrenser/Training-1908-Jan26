@@ -7,6 +7,7 @@ using namespace std;
 #include "Admin.h"
 #include "Owner.h"
 #include "Engineer.h"
+#include "Exception.h"
 class SiteTrackerController
 {
 private:
@@ -17,8 +18,11 @@ private:
 	string m_name, m_username, m_password, m_repassword, m_phone,m_role,m_description,m_deadline,m_status,m_message;
 	string m_location,m_owner,m_engineer,m_id,m_engineerID,m_siteId;
 	float m_area;
-	int m_type,m_phase, m_age,m_quantity;
+	int m_type,m_phase, m_age,m_quantity,m_index;
+	Exception m_exception;
+	bool m_flag;
 public:
+	SiteTrackerController() :m_index{ 0 } {}
 	void controllerMenu();
 	void addUser();
 	void loginUser();
@@ -29,7 +33,7 @@ public:
 	void addEngineer();
 	void viewSite();
 	void assignEngineerToSite();
-	void viewEngnieers();
+	void viewEngineer();
 	void viewWorkers();
 	void addWorkers();
 	void addMaterial();
@@ -41,5 +45,8 @@ public:
 	void updateSitePhase();
 	void updateTaskStatus();
 	void deleteSite();
+	bool emailValidation(string email);
+	bool phoneValidation(string phone);
+	bool passwordValidation(string password,string re_password);
 };
 
