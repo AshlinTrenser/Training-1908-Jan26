@@ -1,7 +1,6 @@
 #include "FileManager.h"
 
-Admin FileManager::m_admin;
-void FileManager::loadUser(vector<User*>& users)
+void FileManager::loadUser(vector<User*>& users, Admin& admin) 
 {
 	ifstream file("User.txt");
 	if (!file) {
@@ -37,7 +36,7 @@ void FileManager::loadUser(vector<User*>& users)
 					ids.push_back(currentId);
 				}
 			}
-			users.push_back(m_admin.createEngineer(m_name, m_phone, m_username, m_password, ids));
+			users.push_back(admin.createEngineer(m_name, m_phone, m_username, m_password, ids));
 		}
 		else if (m_role == "Owner")
 		{
@@ -48,10 +47,10 @@ void FileManager::loadUser(vector<User*>& users)
 	file.close();
 }
 
-void FileManager::saveUser(vector<User*> user)
+void FileManager::saveUser(vector<User*> users)
 {
 	ofstream file(USER);
-	for (auto user : user)
+	for (auto user : users)
 	{
 		string m_role = user->getUserType();
 		auto admin = dynamic_cast<Admin*>(user);
@@ -104,13 +103,29 @@ void FileManager::loadSite(vector<Site*>& site)
 		getline(ss, m_engineer, '|');
 		getline(ss, m_area, '|');
 		getline(ss, m_phase, '|');
-		float area = stoi(m_area);
+		float area = stof(m_area);
 		int phase = stoi(m_phase);
-		site.push_back(new Site(m_SiteName,m_location, area, m_owner, phase));
+		site.push_back(new Site(m_SiteName,m_location, area, m_owner, phase,m_engineer));
 	}
 	file.close();
 }
 
+void FileManager::loadSiteStatus(vector<Status*>& siteStatus)
+{
+	ifstream file(SITESTATUS);
+	if (!file)
+	{
+		return;
+	}
+	string line,m_message;
+	while (getline(file, line))
+	{
+		stringstream ss(line);
+		getline(ss, m_id, '|');
+		getline(ss, m_message, '|');
+		siteStatus.push_back(new Status(m_id, m_message));
+	}
+}
 void FileManager::saveSite(vector<Site*>& sites)
 {
 	ofstream file(SITE);
@@ -123,6 +138,16 @@ void FileManager::saveSite(vector<Site*>& sites)
 			<< site->getEngineer() << '|'
 			<< site->getArea() << '|'
 			<< site->getPhase() << '\n';
+	}
+	file.close();
+}
+
+void FileManager::saveSiteStatus(vector<Status*>& siteStatus)
+{
+	ofstream file(SITESTATUS);
+	for (auto status : siteStatus)
+	{
+		file << status->getId() << '|' << status->getMessage() << '\n';
 	}
 	file.close();
 }

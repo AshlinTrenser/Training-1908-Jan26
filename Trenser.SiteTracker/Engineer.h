@@ -40,7 +40,10 @@ public:
 	string viewSiteStatus(string id, vector<Site*>& sites);
 	string updateSitePhase(string Id, int phase, vector<Site*>& sites);
 	string updateTaskStatus(string id, string status);
-	bool checkSiteID(string id, vector<Site*>& sites);
+	bool checkSiteID(string id, vector<Site*>& sites); 
+	vector<string> getAssignedSites();
+	void addSite(string id);
+	bool hasSite(string siteId);
 	~Engineer();
 };
 

@@ -10,5 +10,6 @@ int main()
 	SiteTrackerController siteControl(&fileManager);
 	siteControl.loadFromFiles();
 	siteControl.controllerMenu();
+	siteControl.saveToFile();
 	return 0;
 }

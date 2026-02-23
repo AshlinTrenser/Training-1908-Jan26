@@ -1,6 +1,6 @@
 #include "Site.h"
 int Site::m_counter = 1;
-Site::Site(string siteName,string location, float area, string owner, int phase)
+Site::Site(string siteName, string location, float area, string owner, int phase)
 {
 	if (m_counter < 10)
 	{
@@ -8,14 +8,32 @@ Site::Site(string siteName,string location, float area, string owner, int phase)
 	}
 	else
 	{
-		m_id = "S" + to_string(m_counter);	
+		m_id = "S" + to_string(m_counter);
 	}
 	m_counter++;
 	m_siteName = siteName;
 	m_phase = phase;
 	m_location = location;
 	m_area = area;
-	m_owner = owner;	
+	m_owner = owner;
+}
+Site::Site(string siteName, string location, float area, string owner, int phase, string engineerName)
+{
+	if (m_counter < 10)
+	{
+		m_id = "S0" + to_string(m_counter);
+	}
+	else
+	{
+		m_id = "S" + to_string(m_counter);
+	}
+	m_counter++;
+	m_siteName = siteName;
+	m_phase = phase;
+	m_location = location;
+	m_engineer = engineerName; 
+	m_area = area;
+	m_owner = owner;
 }
 void Site::setEngineer(string name)
 {

@@ -14,6 +14,7 @@ class FileManager;
 class SiteTrackerController
 {
 private:
+	User* m_currentUser = nullptr;
 	FileManager* m_fileManager;
 	Engineer m_engineer;
 	vector<User*> m_user;
@@ -24,6 +25,7 @@ private:
 	int m_type,m_phase, m_age,m_quantity,m_index;
 	Exception m_exception;
 	bool m_flag;
+	vector<Status*> m_siteStatus;
 public:
 	SiteTrackerController(FileManager* fileManager);
 	void loadFromFiles();
@@ -47,11 +49,13 @@ public:
 	void viewTask();
 	void addSiteStatus();
 	void viewSiteStatus();
+	void viewSiteStatus(string name);
 	void updateSitePhase();
 	void updateTaskStatus();
 	void deleteSite();
 	bool emailValidation(string email);
 	bool phoneValidation(string phone);
 	bool passwordValidation(string password,string re_password);
+
 };
 

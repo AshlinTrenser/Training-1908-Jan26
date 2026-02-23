@@ -139,6 +139,23 @@ string Engineer::updateTaskStatus(string id, string status)
 	}
 	return "\nTask Id not in your database, Try another one!";
 }
+vector<string> Engineer::getAssignedSites()
+{
+	return m_siteId;
+}
+
+void Engineer::addSite(string id)
+{
+	m_siteId.push_back(id);
+}
+bool Engineer::hasSite(string siteId)
+{
+	for (const string& id : m_siteId)
+		if (id == siteId)
+			return true;
+
+	return false;
+}
 Engineer::~Engineer()
 {
 	for (auto worker : worker)

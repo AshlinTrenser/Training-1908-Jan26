@@ -28,13 +28,15 @@
 	}
 	void SiteTrackerController::loadFromFiles()
 	{
-		m_fileManager->loadUser(m_user);
-		//m_fileManager->loadSite();
+		m_fileManager->loadUser(m_user,m_admin);
+		m_fileManager->loadSite(m_admin.getSite());
+		//m_fileManager->loadSiteStatus();//error
 	}
 	void SiteTrackerController::saveToFile()
 	{
 		m_fileManager->saveUser(m_user);
-		//m_fileManager->saveSite()
+		m_fileManager->saveSite(m_admin.getSite());
+		//m_fileManager->saveSiteStatus();//error
 	}
 	void SiteTrackerController::controllerMenu()
 	{
@@ -54,7 +56,6 @@
 				loginUser();
 				break;
 			case 3:
-				m_fileManager->saveUser(m_user);
 				break;
 			default:
 				cout << "Invalid input! try again\n";
@@ -87,7 +88,7 @@
 				m_admin.addNewSite(m_name,m_location, m_area, m_owner, 1);
 				break;
 			case 2:
-				viewSiteStatus();
+				viewSiteStatus(name);
 				break;
 			case 3:
 				break;
@@ -281,6 +282,7 @@
 		{
 			if ((*iterator)->getUsername() == m_username && ((*iterator)->getPassword() == m_password))
 			{
+				m_currentUser = *iterator;
 				string type=(*iterator)->menu();
 				if (type == "Owner")
 				{
@@ -336,13 +338,47 @@
 		system("cls");
 		cout << "\nEnter the site ID to view: ";
 		cin >> m_siteId;
-		m_message= m_engineer.viewSiteStatus(m_siteId,m_admin.getSite());
+		m_message = m_engineer.viewSiteStatus(m_siteId, m_admin.getSite());
 		if (m_message.empty())
 		{
 			cout << "\nNo Updates!\n\n";
 			return;
 		}
 		cout << endl << "Here is the status : " << m_message << endl << endl;
+	}
+	void SiteTrackerController::viewSiteStatus(string name)
+	{
+		system("cls");
+		vector<Site*> mySites = m_admin.getSitesByOwner(name);
+		if (mySites.empty())
+		{
+			cout << "\nYou have no sites registered.\n";
+			return;
+		}
+		cout << "\nYour Sites:\n";
+		for (auto s : mySites)
+		{
+			cout << "ID: " << s->getId()<< " | Location: " << s->getLocation() << endl;
+		}
+
+		cout << "\nEnter Site ID to view status: ";
+		cin >> m_siteId;
+
+		bool found = false;
+
+		for (auto site : mySites)
+		{
+			if (site->getId() == m_siteId)
+			{
+				cout << "\nStatus: " << m_admin.viewSiteStatus(m_siteId) << endl<<endl;
+				found = true;
+				break;
+			}
+		}
+		if (!found)
+		{
+			cout << "\nInvalid site ID or not your site!\n";
+		}
 	}
 	void SiteTrackerController::addTask()
 	{
@@ -442,6 +478,34 @@
 	void SiteTrackerController::addWorkers()
 	{
 		system("cls");
+		Engineer* eng = dynamic_cast<Engineer*>(m_currentUser);
+		if (!eng)
+		{
+			cout << "Access denied\n";
+			return;
+		}
+		vector<string> sites = eng->getAssignedSites();
+
+		if (sites.empty())
+		{
+			cout << "Site is not assigned\n";
+			return;
+		}
+
+		cout << "\nAssigned Sites:\n";
+		for (string id : sites)
+			cout << id << endl;
+
+		string selectedSite;
+		cout << "\nEnter site ID: ";
+		cin >> selectedSite;
+
+		if (!eng->hasSite(selectedSite))
+		{
+			cout << "Invalid site\n";
+			return;
+		}
+
 		cout << "Worker Name : ";
 		cin.ignore();
 		getline(cin, m_name);
@@ -473,7 +537,7 @@
 			{
 				cout << id << ",";
 			}
-			cout << "\n";
+			cout << "\n\n\n";
 		}
 	}
 	void SiteTrackerController::viewSite()
@@ -499,6 +563,37 @@
 	void SiteTrackerController::assignEngineerToSite()
 	{
 		system("cls");
+		string siteName, engineerName;
+
+		cout << "\nEnter Site Name: ";
+		cin >> siteName;
+
+		vector<Site*> sites = m_admin.findSitesByName(siteName);
+
+		if (sites.empty())
+		{
+			cout << "\nNo site found with this name\n";
+			return;
+		}
+
+		cout << "\nMatching Sites:\n";
+		for (auto s : sites)
+		{
+			cout << "ID: " << s->getId() << " | Location: " << s->getLocation() << " | Owner: " << s->getOwner() << endl;
+		}
+		cout << "\nEnter Engineer Name: ";
+		cin >> engineerName;
+		vector<Engineer*> engineers = m_admin.findEngineersByName(engineerName);
+		if (engineers.empty())
+		{
+			cout << "\nNo engineer found with this name\n";
+			return;
+		}
+		cout << "\nMatching Engineers:\n";
+		for (auto e : engineers)
+		{
+			cout << "ID: " << e->getId()<< " | Name: " << e->getName()<< " | Phone: " << e->getPhone() << endl;
+		}
 		cout << "\nEnter the Site ID  : ";
 		cin >> m_siteId;
 		cout << "Enter the Engineer ID: ";

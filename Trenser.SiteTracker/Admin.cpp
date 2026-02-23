@@ -59,7 +59,7 @@ string Admin::assignEngineerToSite(string siteId, string engineerId)
 	foundEngineer->setSiteId(siteId);
 	foundSite->setEngineer(foundEngineer->getName());
 	return "Engineer assigned successfully";
-}
+}    
 vector<Site*>& Admin::getSite()
 {
 	return m_site;
@@ -108,6 +108,44 @@ bool Admin::deleteSite(string id)
 		}
 	}
 	return false;
+}
+vector<Site*> Admin::findSitesByName(string name)
+{
+	vector<Site*> result;
+
+	for (auto site : m_site)
+	{
+		if (site->getSiteName() == name)
+		{
+			result.push_back(site);
+		}
+	}
+	return result;
+}
+
+vector<Engineer*> Admin::findEngineersByName(string name)
+{
+	vector<Engineer*> result;
+	for (auto e : m_engineers)
+	{
+		if (e->getName() == name)
+		{
+			result.push_back(e);
+		}
+	}
+	return result;
+}
+vector<Site*> Admin::getSitesByOwner(string ownerName)
+{
+	vector<Site*> result;
+	for (auto site : m_site)
+	{
+		if (site->getOwner() == ownerName)
+		{
+			result.push_back(site);
+		}
+	}
+	return result;
 }
 Admin::~Admin()
 {

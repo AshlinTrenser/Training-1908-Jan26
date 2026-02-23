@@ -20,7 +20,7 @@ class FileManager
 {
 private:
     string m_name, m_phone, m_username, m_password, m_role,m_id,m_phase,m_location,m_area,m_owner, m_engineer, m_SiteName;
-    static Admin m_admin;
+    
     const string USER = "User.txt";
     const string SITE = "Site.txt";
     const string TASK = "Task.txt";
@@ -28,18 +28,18 @@ private:
     const string SITESTATUS = "Status.txt";
     const string WORKER = "Worker.txt";
 public:
-    void loadUser(vector<User*>& user);
+    void loadUser(vector<User*>& user, Admin& admin);
     void loadSite(vector<Site*>& site);
+    void loadSiteStatus(vector<Status*>& siteStatus);
     void loadTask();
-    void loadSiteStatus();
     void loadWorker();
     void loadMaterial();
 
     void saveUser(vector<User*> user);
     void saveSite(vector<Site*>& sites);
+    void saveSiteStatus(vector<Status*>& siteStatus);
     /*static 
-    static void saveTask();
-    static void saveSiteStatus();
+    static void saveTask();;
     static void saveWorker();
     static void saveMaterial();*/
 };

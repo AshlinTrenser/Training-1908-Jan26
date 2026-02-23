@@ -8,6 +8,7 @@ class Owner:
 	public User
 {
 private:
+	vector<string> m_siteIds;
 	string m_name;
 	string m_phone;
 public:
@@ -16,5 +17,8 @@ public:
 	string getName();
 	string getPhone();
 	string menu() override;
+	string getSiteId();
+	vector<string> getSiteIds();
+	void addSite(string id);
 };
 

@@ -16,3 +16,12 @@ string Owner::menu()
 {
 	return "Owner";
 }
+vector<string> Owner::getSiteIds()
+{
+	return m_siteIds;
+}
+
+void Owner::addSite(string id)
+{
+	m_siteIds.push_back(id);
+}

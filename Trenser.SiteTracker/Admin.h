@@ -32,6 +32,9 @@ public:
 	vector<Task*>& getTask();
 	string viewSiteStatus(string siteID);
 	bool deleteSite(string id);
+	vector<Site*> findSitesByName(string name);
+	vector<Engineer*> findEngineersByName(string name);
+	vector<Site*> getSitesByOwner(string ownerName);
 	~Admin();
 };
 

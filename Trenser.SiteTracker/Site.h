@@ -17,6 +17,7 @@ private:
 public:
 	Site() :m_id{}, m_owner{}, m_location{}, m_engineer{}, m_area{}, m_phase{} {}
 	Site(string siteName,string location, float area, string owner,int phase);
+	Site(string siteName, string location, float area, string owner, int phase,string engineerName);
 	void setEngineer(string name);
 	string getOwner();
 	string getLocation();
