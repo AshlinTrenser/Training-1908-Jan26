@@ -8,21 +8,26 @@ using namespace std;
 #include "Owner.h"
 #include "Engineer.h"
 #include "Exception.h"
+
+class FileManager;
+
 class SiteTrackerController
 {
 private:
-	Engineer m_engineerPurpose;
+	FileManager* m_fileManager;
+	Engineer m_engineer;
 	vector<User*> m_user;
-	vector<Engineer*> m_engineers;
 	Admin m_admin;
 	string m_name, m_username, m_password, m_repassword, m_phone,m_role,m_description,m_deadline,m_status,m_message;
-	string m_location,m_owner,m_engineer,m_id,m_engineerID,m_siteId;
+	string m_location,m_owner,m_id,m_engineerID,m_siteId;
 	float m_area;
 	int m_type,m_phase, m_age,m_quantity,m_index;
 	Exception m_exception;
 	bool m_flag;
 public:
-	SiteTrackerController() :m_index{ 0 } {}
+	SiteTrackerController(FileManager* fileManager);
+	void loadFromFiles();
+	void saveToFile();
 	void controllerMenu();
 	void addUser();
 	void loginUser();
@@ -36,12 +41,12 @@ public:
 	void viewEngineer();
 	void viewWorkers();
 	void addWorkers();
-	void addMaterial();
+	void addMaterialToSite();
 	void viewMaterials();
 	void addTask();
 	void viewTask();
-	void addStatus();
-	void viewStatus();
+	void addSiteStatus();
+	void viewSiteStatus();
 	void updateSitePhase();
 	void updateTaskStatus();
 	void deleteSite();

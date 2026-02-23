@@ -1,44 +1,128 @@
-//#include "FileManager.h"
-//void FileManager::loadUsers(vector<User*>& users)
-//{
-//    ifstream file("User.txt");
-//    if (!file) return;
-//
-//    string type, name, phone, username, password;
-//
-//    while (file >> type >> name >> phone >> username >> password)
-//    {
-//        if (type == "Admin")
-//            users.push_back(new Admin(name, phone, username, password));
-//
-//        else if (type == "Owner")
-//            users.push_back(new Owner(name, phone, username, password));
-//    }
-//}
-//void FileManager::loadEngineers(vector<Engineer*>& engineers)
-//{
-//    ifstream file("Engineer.txt");
-//    if (!file) return;
-//
-//    string name, phone, id, username, password;
-//
-//    while (file >> name >> phone >> id >> username >> password)
-//    {
-//        engineers.push_back(new Engineer(name, phone, id, username, password));
-//    }
-//}
-//void FileManager::loadSites(vector<Site*>& sites)
-//{
-//    ifstream file("Site.txt");
-//    if (!file) return;
-//
-//    string id, location, owner;
-//    float area;
-//    int phase;
-//
-//    while (file >> id >> location >> area >> owner >> phase)
-//    {
-//        sites.push_back(new Site(id, location, area, owner, phase));
-//    }
-//}
-//
+#include "FileManager.h"
+
+Admin FileManager::m_admin;
+void FileManager::loadUser(vector<User*>& users)
+{
+	ifstream file("User.txt");
+	if (!file) {
+		return;
+	}
+
+	string line;
+	while (getline(file, line))
+	{
+		stringstream ss(line);
+		string m_name, m_phone, m_username, m_password, m_role, m_siteIds;
+
+		getline(ss, m_name, '|');
+		getline(ss, m_phone, '|');
+		getline(ss, m_username, '|');
+		getline(ss, m_password, '|');
+		getline(ss, m_role, '|');
+
+		if (m_role == "Admin")
+		{
+			users.push_back(new Admin(m_name, m_phone, m_username, m_password));
+			cout << m_name << "\n";
+		}
+		else if (m_role == "Engineer")
+		{
+			getline(ss, m_siteIds, '|'); // only read site IDs for engineers
+			vector<string> ids;
+			string currentId;
+			stringstream idStream(m_siteIds);
+			while (getline(idStream, currentId, ','))
+			{
+				if (!currentId.empty()) {
+					ids.push_back(currentId);
+				}
+			}
+			users.push_back(m_admin.createEngineer(m_name, m_phone, m_username, m_password, ids));
+		}
+		else if (m_role == "Owner")
+		{
+			users.push_back(new Owner(m_name, m_phone, m_username, m_password));
+		}
+	}
+
+	file.close();
+}
+
+void FileManager::saveUser(vector<User*> user)
+{
+	ofstream file(USER);
+	for (auto user : user)
+	{
+		string m_role = user->getUserType();
+		auto admin = dynamic_cast<Admin*>(user);
+		file << user->getName() << "|";
+		if (m_role == "Admin")
+		{
+			auto admin = dynamic_cast<Admin*>(user);
+			file << admin->getPhone() << "|";
+		}
+		else if (m_role == "Engineer")
+		{
+			auto engineer = dynamic_cast<Engineer*>(user);
+			file << engineer->getPhone() << "|";
+		}
+		else if (m_role == "Owner")
+		{
+			auto owner = dynamic_cast<Owner*>(user);
+			file << owner->getPhone() << "|";
+		}
+		file << user->getUsername() << "|"
+			<< user->getPassword() << "|"
+			<< user->getUserType() << "|";
+		if (m_role == "Engineer")
+		{
+			auto engineer = dynamic_cast<Engineer*>(user);
+			for (const auto& id : engineer->getSiteId())
+			{
+				file << id << ",";
+			}
+		}
+		file << "\n";
+	}
+	file.close();
+}
+void FileManager::loadSite(vector<Site*>& site)
+{
+	ifstream file(SITE);
+	if (!file)
+	{
+		return;
+	}
+	string line;
+	while (getline(file, line))
+	{
+		stringstream ss(line);
+		getline(ss, m_id, '|');
+		getline(ss, m_SiteName, '|');
+		getline(ss, m_owner, '|');
+		getline(ss, m_location, '|');
+		getline(ss, m_engineer, '|');
+		getline(ss, m_area, '|');
+		getline(ss, m_phase, '|');
+		float area = stoi(m_area);
+		int phase = stoi(m_phase);
+		site.push_back(new Site(m_SiteName,m_location, area, m_owner, phase));
+	}
+	file.close();
+}
+
+void FileManager::saveSite(vector<Site*>& sites)
+{
+	ofstream file(SITE);
+	for (auto site : sites)
+	{
+		file << site->getId() << '|'
+			<< site->getSiteName() << '|'
+			<< site->getOwner() << '|'
+			<< site->getLocation() << '|'
+			<< site->getEngineer() << '|'
+			<< site->getArea() << '|'
+			<< site->getPhase() << '\n';
+	}
+	file.close();
+}

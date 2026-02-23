@@ -1,3 +1,5 @@
+//<------ Author : Ashlin Babu--------->
+//<------ Date   : 23-02-2026---------->
 #pragma once
 #include<iostream>
 #include<string>
@@ -17,14 +19,15 @@ private:
 	vector<Task*> m_task;
 	string m_name;
 	string m_phone,m_id;
-	string m_siteId;
+	vector<string> m_siteId;
 public:
-	Engineer() {}
+	Engineer()=default;
 	Engineer(string name, string phone, string username, string password);
+	Engineer(string name, string phone, string username, string password,vector<string> ids);
 	string getName();
 	string getPhone();
 	string getId();
-	string getSiteId();
+	vector<string> getSiteId();
 	string menu() override;
 	void setSiteId(string id);
 	void addWorker(string name, string role, int age, string siteID);
@@ -33,10 +36,11 @@ public:
 	vector<Material*> displayMatrial();
 	void addTask(string description, string deadline, string status, string siteID);
 	vector<Task*> displayTask();
-	string addStatus(string id,string message,vector<Site*>& sites);
-	string viewStatus(string id, vector<Site*>& sites);
+	string addSiteStatus(string id,string message,vector<Site*>& sites);
+	string viewSiteStatus(string id, vector<Site*>& sites);
 	string updateSitePhase(string Id, int phase, vector<Site*>& sites);
 	string updateTaskStatus(string id, string status);
 	bool checkSiteID(string id, vector<Site*>& sites);
+	~Engineer();
 };
 

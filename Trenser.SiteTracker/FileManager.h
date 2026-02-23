@@ -1,9 +1,12 @@
+//<------ Author : Ashlin Babu--------->
+//<------ Date   : 23-02-2026---------->
 #pragma once
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include<string>
+#include <sstream>
 using namespace std;
-
 #include "Admin.h"
 #include "Engineer.h"
 #include "Owner.h"
@@ -11,12 +14,33 @@ using namespace std;
 #include "Worker.h"
 #include "Material.h"
 #include "Task.h"
+#include "User.h"
 
 class FileManager
 {
+private:
+    string m_name, m_phone, m_username, m_password, m_role,m_id,m_phase,m_location,m_area,m_owner, m_engineer, m_SiteName;
+    static Admin m_admin;
+    const string USER = "User.txt";
+    const string SITE = "Site.txt";
+    const string TASK = "Task.txt";
+    const string MATERIAL = "Material.txt";
+    const string SITESTATUS = "Status.txt";
+    const string WORKER = "Worker.txt";
 public:
-    static void loadUsers(vector<User*>& users);
-    static void loadSites(vector<Site*>& sites);
-    static void loadEngineers(vector<Engineer*>& engineers);
+    void loadUser(vector<User*>& user);
+    void loadSite(vector<Site*>& site);
+    void loadTask();
+    void loadSiteStatus();
+    void loadWorker();
+    void loadMaterial();
+
+    void saveUser(vector<User*> user);
+    void saveSite(vector<Site*>& sites);
+    /*static 
+    static void saveTask();
+    static void saveSiteStatus();
+    static void saveWorker();
+    static void saveMaterial();*/
 };
 

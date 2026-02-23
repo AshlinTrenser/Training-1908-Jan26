@@ -1,12 +1,14 @@
+//<------ Author : Ashlin Babu--------->
+//<------ Date   : 23-02-2026---------->
 #include<iostream>
 using namespace std;
-//#include "FileManager.h"
+#include "FileManager.h"
 #include "SiteTrackerController.h"
 int main()
 {
-	SiteTrackerController siteControl;/*
-	FileManager::loadUsers(siteControl.getUsers());
-	FileManager::loadSites(siteControl.getAdmin().getSite());
-	FileManager::loadEngineers(siteControl.getAdmin().getEngineersList());*/
+	FileManager fileManager;
+	SiteTrackerController siteControl(&fileManager);
+	siteControl.loadFromFiles();
 	siteControl.controllerMenu();
+	return 0;
 }

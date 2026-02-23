@@ -1,3 +1,5 @@
+//<------ Author : Ashlin Babu--------->
+//<------ Date   : 23-02-2026---------->
 #pragma once
 #include<iostream>
 #include<vector>
@@ -12,7 +14,6 @@ class Admin:
 private:
 	string m_name;
 	string m_phone;
-	Site assignSite;
 	vector<Site*> m_site;
 	vector<Task*> m_task;
 	vector<Engineer*> m_engineers;
@@ -22,13 +23,15 @@ public:
 	string getName();
 	string getPhone();
 	string menu() override;
-	void addNewSite(string location, float area, string owner, int phase);
-	Engineer* createEngnieer(string name, string phone, string username, string password);
-	string assignEngineer(string siteId,string engineerId);
+	void addNewSite(string siteName,string location, float area, string owner, int phase);
+	Engineer* createEngineer(string name, string phone, string username, string password);
+	Engineer* createEngineer(string name, string phone, string username, string password, vector<string> ids);
+	string assignEngineerToSite(string siteId,string engineerId);
 	vector<Engineer*> getEngineersList();
 	vector<Site*>& getSite();
 	vector<Task*>& getTask();
-	string viewStatus(string siteID);
+	string viewSiteStatus(string siteID);
 	bool deleteSite(string id);
+	~Admin();
 };
 

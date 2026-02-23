@@ -14,6 +14,21 @@ Engineer::Engineer(string name, string phone, string username, string password) 
 	m_name = name;
 	m_phone = phone;
 }
+Engineer::Engineer(string name, string phone, string username, string password, vector<string> ids) : User(username, password, "Engineer", name)
+{
+	if (m_counter < 10)
+	{
+		m_id = "E0" + to_string(m_counter);
+	}
+	else
+	{
+		m_id = "E" + to_string(m_counter);
+	}
+	m_counter++;
+	m_name = name;
+	m_phone = phone;
+	m_siteId = ids;
+}
 string Engineer::getName()
 {
 	return m_name;
@@ -32,13 +47,13 @@ string Engineer::menu()
 }
 void Engineer::setSiteId(string id)
 {
-	m_siteId = id;
+	m_siteId.push_back(id);
 }
-string Engineer::getSiteId()
+vector<string> Engineer::getSiteId()
 {
 	if (m_siteId.empty())
 	{
-		return "Not Assigned";
+		return {};
 	}
 	return m_siteId;
 }
@@ -66,25 +81,25 @@ vector<Task*> Engineer::displayTask()
 {
 	return m_task;
 }
-string Engineer::addStatus(string id,string message,vector<Site*>& sites)
+string Engineer::addSiteStatus(string id,string message,vector<Site*>& sites)
 {
 	for (auto site : sites)
 	{
 		if (site->getId() == id)
 		{
-			site->updateStatus(message);
+			site->updateSiteStatus(message);
 			return "Status Added!";
 		}
 	}
 	return "Not Found!";
 }
-string Engineer::viewStatus(string id, vector<Site*>& sites)
+string Engineer::viewSiteStatus(string id, vector<Site*>& sites)
 {
 	for (auto site : sites)
 	{
 		if (site->getId() == id)
 		{
-			return site->getStatusMessage();
+			return site->getSiteStatusMessage();
 		}
 	}
 	return "No Status Found!";
@@ -123,4 +138,19 @@ string Engineer::updateTaskStatus(string id, string status)
 		}
 	}
 	return "\nTask Id not in your database, Try another one!";
+}
+Engineer::~Engineer()
+{
+	for (auto worker : worker)
+	{
+		delete worker;
+	}
+	for (auto material : m_material)
+	{
+		delete material;
+	}
+	for (auto task : m_task)
+	{
+		delete task;
+	}
 }

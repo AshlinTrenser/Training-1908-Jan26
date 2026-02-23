@@ -16,17 +16,23 @@ string Admin::menu()
 {
 	return "Admin";
 }
-void Admin::addNewSite(string location, float area, string owner, int phase)
+void Admin::addNewSite(string siteName,string location, float area, string owner, int phase)
 {
-	m_site.push_back(new Site(location, area, owner, phase));
+	m_site.push_back(new Site(siteName,location, area, owner, phase));
 }
-Engineer* Admin::createEngnieer(string name, string phone, string username, string password)
+Engineer* Admin::createEngineer(string name, string phone, string username, string password)
 {
 	Engineer* engineer = new Engineer(name, phone, username, password);
 	m_engineers.push_back(engineer);
 	return engineer;
 }
-string Admin::assignEngineer(string siteId, string engineerId)
+Engineer* Admin::createEngineer(string name, string phone, string username, string password,vector<string> ids)
+{
+	Engineer* engineer = new Engineer(name, phone, username, password,ids);
+	m_engineers.push_back(engineer);
+	return engineer;
+}
+string Admin::assignEngineerToSite(string siteId, string engineerId)
 {
 	Engineer* foundEngineer = nullptr;
 	Site* foundSite = nullptr;
@@ -66,13 +72,13 @@ vector<Engineer*> Admin::getEngineersList()
 {
 	return m_engineers;
 }
-string Admin::viewStatus(string siteID)
+string Admin::viewSiteStatus(string siteID)
 {
 	for (auto site : m_site)
 	{
 		if (site->getId() == siteID)
 		{
-			string message = site->getStatusMessage();
+			string message = site->getSiteStatusMessage();
 			if (message.empty())
 			{
 				return "No Status Updates";
@@ -84,14 +90,37 @@ string Admin::viewStatus(string siteID)
 }
 bool Admin::deleteSite(string id)
 {
+	for (auto task = m_task.begin(); task != m_task.end();)
+	{
+		if ((*task)->getSiteID() == id)
+		{
+			delete* task;
+			task = m_task.erase(task);
+		}
+		else { task++; }
+	}
 	for (auto iterator = m_site.begin(); iterator != m_site.end(); iterator++)
 	{
 		if ((*iterator)->getId() == id)
 		{
-			delete *iterator;
 			m_site.erase(iterator);
 			return true;
 		}
 	}
 	return false;
+}
+Admin::~Admin()
+{
+	for (auto site : m_site)
+	{
+		delete site;
+	}
+	for (auto engineer : m_engineers)
+	{
+		delete engineer;
+	}
+	for (auto task : m_task)
+	{
+		delete task;
+	}
 }
