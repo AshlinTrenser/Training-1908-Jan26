@@ -4,7 +4,7 @@
 		int choice = 1;
 		while (choice != 3)
 		{
-			cout << "Welcome to ABC construction site tracker...\n";
+			cout << "\nWelcome to ABC construction site tracker...\n";
 			cout << "\n1.Registration\n2.Login\n3.Exit\n";
 			choice = m_exception.checker();
 			system("cls");
@@ -19,7 +19,7 @@
 			case 3:
 				break;
 			default:
-				cout << "Invalid input! try again";
+				cout << "Invalid input! try again\n";
 				break;
 			}
 		}
@@ -218,14 +218,8 @@
 		if (!m_flag) { return; }
 		cout << "\n1.Admin\n2.Owner\n\nUser Type: ";
 		cin >> m_type;
-		if (m_type == 1)
-		{
-			m_user.push_back(new Admin(m_name, m_phone, m_username, m_password));
-		}
-		if (m_type == 2)
-		{
-			m_user.push_back(new Owner(m_name, m_phone, m_username, m_password));
-		}
+		if (m_type == 1) {m_user.push_back(new Admin(m_name, m_phone, m_username, m_password));}
+		if (m_type == 2) {m_user.push_back(new Owner(m_name, m_phone, m_username, m_password));}
 	}
 	void SiteTrackerController::loginUser()
 	{
@@ -304,7 +298,7 @@
 			cout << "\nNo Updates!\n";
 			return;
 		}
-		cout << endl << "Here is the status : " << m_message << endl << endl;?
+		cout << endl << "Here is the status : " << m_message << endl << endl;
 	}
 	void SiteTrackerController::addTask()
 	{

@@ -22,9 +22,9 @@ void Admin::addNewSite(string location, float area, string owner, int phase)
 }
 Engineer* Admin::createEngnieer(string name, string phone, string username, string password)
 {
-	Engineer* eng = new Engineer(name, phone, username, password);
-	m_engineers.push_back(eng);
-	return eng;
+	Engineer* engineer = new Engineer(name, phone, username, password);
+	m_engineers.push_back(engineer);
+	return engineer;
 }
 string Admin::assignEngineer(string siteId, string engineerId)
 {
@@ -95,4 +95,3 @@ bool Admin::deleteSite(string id)
 	}
 	return false;
 }
-hhh
