@@ -20,7 +20,7 @@ private:
 	vector<User*> m_user;
 	Admin m_admin;
 	string m_name, m_username, m_password, m_repassword, m_phone,m_role,m_description,m_deadline,m_status,m_message;
-	string m_location,m_owner,m_id,m_engineerID,m_siteId;
+	string m_location,m_owner,m_id,m_engineerID,m_siteId, m_SiteName;
 	float m_area;
 	int m_type,m_phase, m_age,m_quantity,m_index;
 	Exception m_exception;
@@ -62,5 +62,6 @@ public:
 	void deleteEngineer();
 	bool isUserNameExist(string username);
 	void deleteOwner();
+	void viewAllOwners();
 };
 

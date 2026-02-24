@@ -12,8 +12,7 @@ Engineer::Engineer(string name, string phone, string username, string password) 
 	}
 	m_counter++;
 	m_name = name;
-	m_phone = phone;/*
-	m_isActive = true;*/
+	m_phone = phone;
 }
 Engineer::Engineer(string name, string phone, string username, string password, vector<string> ids,bool status) : User(username, password, "Engineer", name,phone,status)
 {
@@ -29,14 +28,6 @@ Engineer::Engineer(string name, string phone, string username, string password, 
 	m_name = name;
 	m_phone = phone;
 	m_siteId = ids;
-	//if (status)
-	//{
-	//	m_isActive = true;
-	//}
-	//else
-	//{
-	//	m_isActive = false;
-	//}
 }
 string Engineer::getName()
 {

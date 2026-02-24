@@ -83,15 +83,12 @@
 			case 1:
 				system("cls");
 				cout << "\nName of Site       :";
-				cin >> m_name;
+				cin >> m_SiteName;
 				cout << "\nLocation           : ";
 				cin >> m_location;
 				cout << "Area of Square feet  : ";
 				cin >> m_area;
-				cout << "Site Owner Name      : ";
-				cin.ignore();
-				getline(cin, m_owner);
-				m_admin.addNewSite(m_name,m_location, m_area, m_owner, 1);
+				m_admin.addNewSite(m_SiteName,m_location, m_area, name, 1);
 				break;
 			case 2:
 				viewSiteStatus(name);
@@ -109,9 +106,9 @@
 		system("cls");
 		cout << "\nAdmin: " << name << endl;
 		int choice = 1;
-		while (choice != 14)
+		while (choice != 15)
 		{
-			cout << "\n1.Add new Site\n2.Add Engineers\n3.View Site\n4.View Engineers\n5.View Site Status\n6.Assign Engineer to Site\n7.Add Task\n8.Delete Site\n9.View Task\n10.View all workers\n11.Update Task Status\n12.Delete Engineer\n13.Delete Owner\n14.Logout\n ";
+			cout << "\n1.Add new Site\n2.Add Engineers\n3.View Site\n4.View Engineers\n5.View Site Status\n6.Assign Engineer to Site\n7.Add Task\n8.Delete Site\n9.View Task\n10.View all workers\n11.Update Task Status\n12.Delete Engineer\n13.Delete Owner\n14.View All Site Owners\n15.Logout\n ";
 			choice = m_exception.checker();
 			switch (choice)
 			{
@@ -155,6 +152,10 @@
 				deleteOwner();
 				break;
 			case 14:
+				viewAllOwners();
+				break;
+			case 15:
+				viewAllOwners();
 				break;
 			default:
 				cout << "Invalid input! try again";
@@ -162,11 +163,78 @@
 			}
 		}
 	}
+	void SiteTrackerController::engineerMenu(string name)
+	{
+		system("cls");
+		cout << "\nEngineer: " << name << endl;
+		int choice = 1;
+		while (choice != 10)
+		{
+			cout << "\n1.Add workers\n2.Add Site status\n3.Add Materials\n4.Add Task\n5.View workers\n6.View site status\n7.View Materials\n8.View Task\n9.Update Site Phase\n10.Logout\n";
+			choice = m_exception.checker();
+			switch (choice)
+			{
+			case 1:
+				addWorkers();
+				break;
+			case 2:
+				addSiteStatus();
+				break;
+			case 3:
+				addMaterialToSite();
+				break;
+			case 4:
+				addTask();
+				break;
+			case 5:
+				viewWorkers();
+				break;
+			case 6:
+				viewSiteStatus();
+				break;
+			case 7:
+				viewMaterials();
+				break;
+			case 8:
+				viewTask();
+				break;
+			case 9:
+				updateSitePhase();
+				break;
+			case 10:
+				break;
+			default:
+				cout << "Invalid input! try again";
+				break;
+			}
+		}
+	}
+	void SiteTrackerController::viewAllOwners()
+	{
+		system("cls");
+		cout << "\n---Owner Details---\n";
+		for (auto user : m_user)
+		{
+			if (user->getUserType() == "Owner")
+			{
+				Owner* owner = dynamic_cast<Owner*>(user);
+				if (owner->isActive())
+				{
+					cout << "\nID      : " << owner->getOwnerID() << "\n";
+					cout << "Name      : " << owner->getName() << "\n";
+					cout << "Phone     : " << owner->getPhone() << "\n";
+					cout << "User Name : " << owner->getUsername() << endl;
+				}
+			}
+		}
+	}
 	void SiteTrackerController::deleteOwner()
 	{
+		system("cls");
 		string ownerName,ownerId;
 		cout << "\nEnter the name of owner to delete: ";
-		cin >> ownerName;
+		cin.ignore();
+		getline(cin, ownerName);
 		vector<Owner*> Owners;
 		for (auto user : m_user)
 		{
@@ -176,6 +244,9 @@
 				if (owner->getName() == ownerName && owner->isActive())
 				{
 					Owners.push_back(owner);
+					cout << "\nID   : " << owner->getOwnerID() << " ";
+					cout << "Name   : " << owner->getName() << " ";
+					cout << "Phone  : " << owner->getPhone() << endl;
 				}
 			}
 		}
@@ -184,9 +255,16 @@
 			cout << "\nNo active owner found with that name!";
 			return;
 		}
+		cout << "\nEnter Owner ID : ";
+		cin >> ownerId;
 		for (auto owner : Owners)
 		{
-			cout<<"Owner ID :"<<owner->getId()//set ownerID.
+			if(owner->getOwnerID() == ownerId)
+			{
+				owner->deactive();
+				cout << "\nDeleted Successfully\n";
+				return;
+			}
 		}
 	}
 	void SiteTrackerController::deleteEngineer()
@@ -331,52 +409,6 @@
 			cout << "\nSite ID: " << user->getSiteID();
 			cout << "\nAge    : " << user->getAge() << endl;
 	    }
-	}
-	void SiteTrackerController::engineerMenu(string name)
-	{
-		system("cls");
-		cout << "\nEngineer: " << name << endl;
-		int choice = 1;
-		while (choice != 10)
-		{
-			cout << "\n1.Add workers\n2.Add Site status\n3.Add Materials\n4.Add Task\n5.View workers\n6.View site status\n7.View Materials\n8.View Task\n9.Update Site Phase\n10.Logout\n";
-			choice = m_exception.checker();
-			switch (choice)
-			{
-			case 1:
-				addWorkers();
-				break;
-			case 2:
-				addSiteStatus();
-				break;
-			case 3:
-				addMaterialToSite();
-				break;
-			case 4:
-				addTask();
-				break;
-			case 5:
-				viewWorkers();
-				break;
-			case 6:
-				viewSiteStatus();
-				break;
-			case 7:
-				viewMaterials();
-				break;
-			case 8:
-				viewTask();
-				break;
-			case 9:
-				updateSitePhase();
-				break;
-			case 10:
-				break;
-			default:
-				cout << "Invalid input! try again";
-				break;
-			}
-		}
 	}
 	bool SiteTrackerController::emailValidation(string email)
 	{

@@ -97,7 +97,6 @@ void Site::deactiveSite()
 {
 	m_isActive = false;
 }
-
 bool Site::isActiveSite()
 {
 	return m_isActive;

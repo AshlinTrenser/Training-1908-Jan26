@@ -48,19 +48,48 @@ void FileManager::loadUser(vector<User*>& users, Admin& admin)
 }
 void FileManager::saveUser(vector<User*> users)
 {
-	ofstream file(USER);/*
+	ofstream file(USER);
 	ofstream adminFile(ADMIN);
 	ofstream engineerFile(ENGINEER);
-	ofstream ownerFile(OWNER);*/
+	ofstream ownerFile(OWNER);
 	for (auto user : users)
 	{
 		string m_role = user->getUserType();
-		file << user->getName() << "|";
-		file << user->getUsername() << "|"
+		file << user->getName() << "|"
+		    << user->getUsername() << "|"
 			<< user->getPassword() << "|"
 			<< user->getUserType() << "|"
 			<< user->getPhone() << "|"
 			<< (user->isActive() ? "Active" : "Inactive") << "|";
+		if (m_role == "Engineer")
+		{
+			engineerFile << user->getName() << "|"
+				<< user->getUsername() << "|"
+				<< user->getPassword() << "|"
+				<< user->getUserType() << "|"
+				<< user->getPhone() << "|"
+				<< (user->isActive() ? "Active" : "Inactive") << "|";
+		}
+		if (m_role == "Admin")
+		{
+			adminFile << user->getName() << "|"
+				<< user->getUsername() << "|"
+				<< user->getPassword() << "|"
+				<< user->getUserType() << "|"
+				<< user->getPhone() << "|"
+				<< (user->isActive() ? "Active" : "Inactive") << "|";
+			adminFile << "\n";
+		}
+		if (m_role == "Owner")
+		{
+			ownerFile << user->getName() << "|"
+				<< user->getUsername() << "|"
+				<< user->getPassword() << "|"
+				<< user->getUserType() << "|"
+				<< user->getPhone() << "|"
+				<< (user->isActive() ? "Active" : "InActive") << "|";
+			ownerFile << "\n";
+		}
 		if (m_role == "Engineer")
 		{
 			auto engineer = dynamic_cast<Engineer*>(user);
@@ -70,13 +99,16 @@ void FileManager::saveUser(vector<User*> users)
 				if (id.empty())
 				{
 					file << "None" << ",";
+					engineerFile << "None" << ",";
 				}
 				else
 				{
 					file << id << ",";
+					engineerFile << id << ",";
 				}
 			}
 			file << "|";
+			engineerFile << "\n";
 		}
 		file << "\n";
 	}
@@ -125,7 +157,7 @@ void FileManager::saveSite(vector<Site*>& sites)
 		}
 		else
 		{
-			file << "Inactive";
+			file << "InActive";
 		}
 			file <<"\n";
 	}

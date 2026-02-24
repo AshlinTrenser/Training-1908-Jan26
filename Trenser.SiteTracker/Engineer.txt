@@ -1,1 +1,2 @@
-
+Amal|amal@'|123|Engineer|1234567890|Active|S01,
+Akhil|akhil@|123|Engineer|1234567890|Active|S10,S09,

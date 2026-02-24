@@ -1,22 +1,36 @@
 #include "Owner.h"
+int Owner::m_counter = 1;
 Owner::Owner(string name, string phone, string username, string password) :User(username, password, "Owner", name, phone,true)
 {
-	m_name = name;
-	m_phone = phone;/*
-	m_isActive = true; */
-}
-Owner::Owner(string name, string phone, string username, string password,bool status) :User(username, password, "Owner",name,phone,status)
-{
-	m_name = name;
-	m_phone = phone;
-	/*if (status)
+	if (m_counter < 10)
 	{
-		m_isActive = true;
+		m_ownerId = "O0" + to_string(m_counter);
 	}
 	else
 	{
-		m_isActive = false;
-	}*/
+		m_ownerId = "O" + to_string(m_counter);
+	}
+	m_counter++;
+	m_name = name;
+	m_phone = phone;
+}
+Owner::Owner(string name, string phone, string username, string password,bool status) :User(username, password, "Owner", name,phone,status)
+{
+	m_name = name;
+	m_phone = phone;
+	if (m_counter < 10)
+	{
+		m_ownerId = "O0" + to_string(m_counter);
+	}
+	else
+	{
+		m_ownerId = "O" + to_string(m_counter);
+	}
+	m_counter++;
+}
+string Owner::getOwnerID()
+{
+	return m_ownerId;
 }
 string Owner::getName()
 {
@@ -38,11 +52,3 @@ void Owner::addSite(string id)
 {
 	m_siteIds.push_back(id);
 }
-//bool Owner::isActive()
-//{
-//	return m_isActive;
-//}
-//void Owner::deactive()
-//{
-//	m_isActive = false;
-//}
