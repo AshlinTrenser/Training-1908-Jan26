@@ -27,20 +27,22 @@ private:
     const string MATERIAL = "Material.txt";
     const string SITESTATUS = "Status.txt";
     const string WORKER = "Worker.txt";
+    const string OWNER = "Owner.txt";
+    const string ENGINEER = "Engineer.txt";
+    const string ADMIN = "Admin.txt";
 public:
     void loadUser(vector<User*>& user, Admin& admin);
     void loadSite(vector<Site*>& site);
-    void loadSiteStatus(vector<Status*>& siteStatus);
-    void loadTask();
-    void loadWorker();
-    void loadMaterial();
+    void loadSiteStatus(vector<Site*>& sites);
+    void loadWorker(Engineer& engineer);
+    void loadTask(Engineer& engineer);
+    void loadMaterial(Engineer& engineer);
 
     void saveUser(vector<User*> user);
     void saveSite(vector<Site*>& sites);
-    void saveSiteStatus(vector<Status*>& siteStatus);
-    /*static 
-    static void saveTask();;
-    static void saveWorker();
-    static void saveMaterial();*/
+    void saveSiteStatus(vector<Site*>& sites);
+    void saveWorker(Engineer& engineer);
+    void saveTask(Engineer& engineer);;;
+    void saveMaterial(Engineer& engineer);
 };
 

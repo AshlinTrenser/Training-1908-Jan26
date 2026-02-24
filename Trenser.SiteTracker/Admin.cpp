@@ -1,8 +1,9 @@
 #include "Admin.h"
-Admin::Admin(string name, string phone, string username, string password) : User(username, password, "Admin",name)
+Admin::Admin(string name, string phone, string username, string password,string status) : User(username, password, "Admin",name,phone,true)
 {
 	m_name = name;
 	m_phone = phone;
+	m_isActive = true;
 }
 string Admin::getName()
 {
@@ -26,9 +27,9 @@ Engineer* Admin::createEngineer(string name, string phone, string username, stri
 	m_engineers.push_back(engineer);
 	return engineer;
 }
-Engineer* Admin::createEngineer(string name, string phone, string username, string password,vector<string> ids)
+Engineer* Admin::createEngineer(string name, string phone, string username, string password,vector<string> ids,bool status)
 {
-	Engineer* engineer = new Engineer(name, phone, username, password,ids);
+	Engineer* engineer = new Engineer(name, phone, username, password,ids,status);
 	m_engineers.push_back(engineer);
 	return engineer;
 }
@@ -68,7 +69,7 @@ vector<Task*>& Admin::getTask()
 {
 	return m_task;
 }
-vector<Engineer*> Admin::getEngineersList()
+vector<Engineer*>& Admin::getEngineersList()
 {
 	return m_engineers;
 }
@@ -88,14 +89,14 @@ string Admin::viewSiteStatus(string siteID)
 	}
 	return "Site Not Found";
 }
-bool Admin::deleteSite(string id)
+bool Admin::deleteSite(string id,vector<Task*>& tasks)
 {
-	for (auto task = m_task.begin(); task != m_task.end();)
+	for (auto task = tasks.begin(); task != tasks.end();)
 	{
 		if ((*task)->getSiteID() == id)
 		{
 			delete* task;
-			task = m_task.erase(task);
+			task = tasks.erase(task);
 		}
 		else { task++; }
 	}
@@ -103,11 +104,28 @@ bool Admin::deleteSite(string id)
 	{
 		if ((*iterator)->getId() == id)
 		{
-			m_site.erase(iterator);
+			(*iterator)->deactiveSite();
 			return true;
 		}
 	}
 	return false;
+}
+
+bool Admin::deleteEngineer(string engineerId,vector<Engineer*>& engineers)
+{
+	for (auto iterator = engineers.begin(); iterator != engineers.end(); iterator++)
+	{
+		if ((*iterator)->getId() == engineerId)
+		{
+			(*iterator)->deactive();
+			return true;
+		}
+	}
+	return false;
+}
+bool Admin::isActiveAdmin()
+{
+	return m_isActive;
 }
 vector<Site*> Admin::findSitesByName(string name)
 {
@@ -126,11 +144,11 @@ vector<Site*> Admin::findSitesByName(string name)
 vector<Engineer*> Admin::findEngineersByName(string name)
 {
 	vector<Engineer*> result;
-	for (auto e : m_engineers)
+	for (auto engineer : m_engineers)
 	{
-		if (e->getName() == name)
+		if (engineer->getName() == name)
 		{
-			result.push_back(e);
+			result.push_back(engineer);
 		}
 	}
 	return result;

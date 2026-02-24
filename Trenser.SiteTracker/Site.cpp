@@ -16,8 +16,9 @@ Site::Site(string siteName, string location, float area, string owner, int phase
 	m_location = location;
 	m_area = area;
 	m_owner = owner;
+	m_isActive = true;
 }
-Site::Site(string siteName, string location, float area, string owner, int phase, string engineerName)
+Site::Site(string siteName, string location, float area, string owner, int phase, string engineerName,string status)
 {
 	if (m_counter < 10)
 	{
@@ -34,6 +35,14 @@ Site::Site(string siteName, string location, float area, string owner, int phase
 	m_engineer = engineerName; 
 	m_area = area;
 	m_owner = owner;
+	if(status=="Active")
+	{
+		m_isActive = true;
+	}
+	else
+	{
+		m_isActive = false;
+	}
 }
 void Site::setEngineer(string name)
 {
@@ -82,4 +91,14 @@ string Site::getSiteStatusMessage()
 void Site::setPhase(int phase)
 {
 	m_phase = phase;
+}
+
+void Site::deactiveSite()
+{
+	m_isActive = false;
+}
+
+bool Site::isActiveSite()
+{
+	return m_isActive;
 }

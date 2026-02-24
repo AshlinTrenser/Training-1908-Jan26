@@ -20,10 +20,11 @@ private:
 	string m_name;
 	string m_phone,m_id;
 	vector<string> m_siteId;
+	//bool m_isActive;
 public:
 	Engineer()=default;
 	Engineer(string name, string phone, string username, string password);
-	Engineer(string name, string phone, string username, string password,vector<string> ids);
+	Engineer(string name, string phone, string username, string password,vector<string> ids,bool status);
 	string getName();
 	string getPhone();
 	string getId();
@@ -44,6 +45,8 @@ public:
 	vector<string> getAssignedSites();
 	void addSite(string id);
 	bool hasSite(string siteId);
+	//bool isActive();
+	//void deactive();
 	~Engineer();
 };
 

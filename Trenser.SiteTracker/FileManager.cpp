@@ -1,32 +1,33 @@
 #include "FileManager.h"
 
-void FileManager::loadUser(vector<User*>& users, Admin& admin) 
+void FileManager::loadUser(vector<User*>& users, Admin& admin)
 {
 	ifstream file("User.txt");
-	if (!file) {
+	if (!file)
+	{
 		return;
 	}
-
-	string line;
+	string line, m_status;
 	while (getline(file, line))
 	{
+		bool isActive=false;
 		stringstream ss(line);
 		string m_name, m_phone, m_username, m_password, m_role, m_siteIds;
-
 		getline(ss, m_name, '|');
-		getline(ss, m_phone, '|');
 		getline(ss, m_username, '|');
 		getline(ss, m_password, '|');
 		getline(ss, m_role, '|');
-
+		getline(ss, m_phone, '|');
+		getline(ss, m_status, '|');
+		if (m_status == "Active") { isActive = true; }
 		if (m_role == "Admin")
 		{
-			users.push_back(new Admin(m_name, m_phone, m_username, m_password));
+			users.push_back(new Admin(m_name, m_phone, m_username, m_password, m_status));
 			cout << m_name << "\n";
 		}
 		else if (m_role == "Engineer")
 		{
-			getline(ss, m_siteIds, '|'); // only read site IDs for engineers
+			getline(ss, m_siteIds, '|');
 			vector<string> ids;
 			string currentId;
 			stringstream idStream(m_siteIds);
@@ -36,50 +37,46 @@ void FileManager::loadUser(vector<User*>& users, Admin& admin)
 					ids.push_back(currentId);
 				}
 			}
-			users.push_back(admin.createEngineer(m_name, m_phone, m_username, m_password, ids));
+			users.push_back(admin.createEngineer(m_name, m_phone, m_username, m_password, ids, isActive));
 		}
 		else if (m_role == "Owner")
 		{
-			users.push_back(new Owner(m_name, m_phone, m_username, m_password));
+			users.push_back(new Owner(m_name, m_phone, m_username, m_password, isActive));
 		}
 	}
-
 	file.close();
 }
-
 void FileManager::saveUser(vector<User*> users)
 {
-	ofstream file(USER);
+	ofstream file(USER);/*
+	ofstream adminFile(ADMIN);
+	ofstream engineerFile(ENGINEER);
+	ofstream ownerFile(OWNER);*/
 	for (auto user : users)
 	{
 		string m_role = user->getUserType();
-		auto admin = dynamic_cast<Admin*>(user);
 		file << user->getName() << "|";
-		if (m_role == "Admin")
-		{
-			auto admin = dynamic_cast<Admin*>(user);
-			file << admin->getPhone() << "|";
-		}
-		else if (m_role == "Engineer")
-		{
-			auto engineer = dynamic_cast<Engineer*>(user);
-			file << engineer->getPhone() << "|";
-		}
-		else if (m_role == "Owner")
-		{
-			auto owner = dynamic_cast<Owner*>(user);
-			file << owner->getPhone() << "|";
-		}
 		file << user->getUsername() << "|"
 			<< user->getPassword() << "|"
-			<< user->getUserType() << "|";
+			<< user->getUserType() << "|"
+			<< user->getPhone() << "|"
+			<< (user->isActive() ? "Active" : "Inactive") << "|";
 		if (m_role == "Engineer")
 		{
 			auto engineer = dynamic_cast<Engineer*>(user);
-			for (const auto& id : engineer->getSiteId())
+			vector<string> siteIDS = engineer->getSiteId();
+			for (auto id : siteIDS)
 			{
-				file << id << ",";
+				if (id.empty())
+				{
+					file << "None" << ",";
+				}
+				else
+				{
+					file << id << ",";
+				}
 			}
+			file << "|";
 		}
 		file << "\n";
 	}
@@ -92,7 +89,7 @@ void FileManager::loadSite(vector<Site*>& site)
 	{
 		return;
 	}
-	string line;
+	string line, m_status;
 	while (getline(file, line))
 	{
 		stringstream ss(line);
@@ -103,28 +100,12 @@ void FileManager::loadSite(vector<Site*>& site)
 		getline(ss, m_engineer, '|');
 		getline(ss, m_area, '|');
 		getline(ss, m_phase, '|');
+		getline(ss, m_status, '|');
 		float area = stof(m_area);
 		int phase = stoi(m_phase);
-		site.push_back(new Site(m_SiteName,m_location, area, m_owner, phase,m_engineer));
+		site.push_back(new Site(m_SiteName,m_location, area, m_owner, phase,m_engineer,m_status));
 	}
 	file.close();
-}
-
-void FileManager::loadSiteStatus(vector<Status*>& siteStatus)
-{
-	ifstream file(SITESTATUS);
-	if (!file)
-	{
-		return;
-	}
-	string line,m_message;
-	while (getline(file, line))
-	{
-		stringstream ss(line);
-		getline(ss, m_id, '|');
-		getline(ss, m_message, '|');
-		siteStatus.push_back(new Status(m_id, m_message));
-	}
 }
 void FileManager::saveSite(vector<Site*>& sites)
 {
@@ -137,17 +118,147 @@ void FileManager::saveSite(vector<Site*>& sites)
 			<< site->getLocation() << '|'
 			<< site->getEngineer() << '|'
 			<< site->getArea() << '|'
-			<< site->getPhase() << '\n';
+			<< site->getPhase() << '|';
+		if (site->isActiveSite())
+		{
+			file << "Active";
+		}
+		else
+		{
+			file << "Inactive";
+		}
+			file <<"\n";
 	}
 	file.close();
 }
-
-void FileManager::saveSiteStatus(vector<Status*>& siteStatus)
+void FileManager::loadSiteStatus(vector<Site*>& sites)
 {
-	ofstream file(SITESTATUS);
-	for (auto status : siteStatus)
+	ifstream file(SITESTATUS);
+	if (!file)
 	{
-		file << status->getId() << '|' << status->getMessage() << '\n';
+		return;
+	}
+	string line,m_message;
+	while (getline(file, m_id, '|') && getline(file, m_message))
+	{
+		for (auto site : sites)
+		{
+			if (site->getId() == m_id)
+			{
+				site->updateSiteStatus(m_message);
+				break;
+			}
+		}
 	}
 	file.close();
+}
+void FileManager::saveSiteStatus(vector<Site*>& sites)
+{
+	ofstream file(SITESTATUS);
+	for (auto site : sites)
+	{
+		file << site->getId() << '|' << site->getSiteStatusMessage() << '\n';
+	}
+	file.close();
+}
+void FileManager::loadWorker(Engineer& engineer)
+{
+	ifstream file(WORKER);
+	if (!file)
+	{
+		return;
+	}
+	string name, role, siteId, line, tempAge;
+	int age;
+	while (getline(file, line))
+	{
+		stringstream ss(line);
+		getline(ss, name, '|');
+		getline(ss, role, '|');
+		getline(ss, tempAge, '|');
+		getline(ss, siteId, '|');
+		age = stoi(tempAge);
+		engineer.addWorker(name, role, age, siteId);
+	}
+	file.close();
+}
+void FileManager::saveWorker(Engineer& engineer)
+{
+	ofstream file(WORKER);
+	vector<Worker*>workers=engineer.displayWorker();
+	for (auto worker : workers)
+	{
+		file << worker->getName() << '|'
+			<< worker->getRole() << '|'
+			<< worker->getAge() << '|'
+			<< worker->getSiteID() << "\n";
+	}
+	file.close();
+}
+void FileManager::loadTask(Engineer& engineer)
+{
+	ifstream file(TASK);
+	if (!file)
+	{
+		return;
+	}
+	string taskId,description, deadline, status, siteID, line;
+	while (getline(file, line))
+	{
+		stringstream ss(line);
+		getline(ss, taskId, '|');
+		getline(ss, description, '|');
+		getline(ss, deadline, '|');
+		getline(ss, status, '|');
+		getline(ss, siteID, '|');
+		engineer.addTask(description, deadline, status, siteID);
+	}
+	file.close();
+}
+void FileManager::saveTask(Engineer& engineer)
+{
+	ofstream file(TASK);
+	vector<Task*> tasks = engineer.displayTask();
+	for (auto task : tasks)
+	{
+		file<<task->getId()<<'|'
+		    << task->getDescription() << '|'
+			<< task->getDeadline() << '|'
+			<< task->getStatus() << '|'
+			<< task->getSiteID() << "\n";
+	}
+	file.close();
+}
+void FileManager::loadMaterial(Engineer& engineer)
+{
+	ifstream file(MATERIAL);
+	if (!file)
+	{
+		return;
+	}
+	string name,siteID,tempQuantity,line,materialId;
+	int quantity;
+	while (getline(file, line))
+	{
+		stringstream ss(line);
+		getline(ss, materialId,'|');
+		getline(ss, name, '|');
+		getline(ss, siteID, '|');
+		getline(ss, tempQuantity, '|');
+		quantity = stoi(tempQuantity);
+		engineer.addMetrial(name, siteID, quantity);
+	}
+	file.close();
+}
+void FileManager::saveMaterial(Engineer& engineer)
+{
+	ofstream file(MATERIAL);
+	vector<Material*> materials = engineer.displayMatrial();
+	for (auto material : materials)
+	{
+		file << material->getId() << '|'
+			<< material->getName() << '|'
+			<< material->getSiteID() << '|'
+			<< material->getQuantity() << "\n";
+	}
 }

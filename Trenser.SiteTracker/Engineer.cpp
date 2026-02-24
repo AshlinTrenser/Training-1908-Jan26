@@ -1,6 +1,6 @@
 #include "Engineer.h"
 int Engineer::m_counter = 1;
-Engineer::Engineer(string name, string phone, string username, string password) : User(username,password,"Engineer",name)
+Engineer::Engineer(string name, string phone, string username, string password) : User(username,password,"Engineer",name,phone,true)
 {
 	if (m_counter < 10)
 	{
@@ -12,9 +12,10 @@ Engineer::Engineer(string name, string phone, string username, string password) 
 	}
 	m_counter++;
 	m_name = name;
-	m_phone = phone;
+	m_phone = phone;/*
+	m_isActive = true;*/
 }
-Engineer::Engineer(string name, string phone, string username, string password, vector<string> ids) : User(username, password, "Engineer", name)
+Engineer::Engineer(string name, string phone, string username, string password, vector<string> ids,bool status) : User(username, password, "Engineer", name,phone,status)
 {
 	if (m_counter < 10)
 	{
@@ -28,6 +29,14 @@ Engineer::Engineer(string name, string phone, string username, string password, 
 	m_name = name;
 	m_phone = phone;
 	m_siteId = ids;
+	//if (status)
+	//{
+	//	m_isActive = true;
+	//}
+	//else
+	//{
+	//	m_isActive = false;
+	//}
 }
 string Engineer::getName()
 {
@@ -156,6 +165,14 @@ bool Engineer::hasSite(string siteId)
 
 	return false;
 }
+//bool Engineer::isActive()
+//{
+//	return m_isActive;
+//}
+//void Engineer::deactive()
+//{
+//	m_isActive = false;
+//}
 Engineer::~Engineer()
 {
 	for (auto worker : worker)

@@ -1,6 +1,4 @@
-ashlin|1234567890|ash@|123|Admin|
-amal|1234567890|amal@|123|Admin|
-ajamal|1234567890|ajamal@|123|Owner|
-amal raj|1234567890|amalraj@|123|Admin|
-akhil|1234567890|akhil@gmail.com|123|Engineer|S01,S02,
-Moha|1234567890|moha@|123|Engineer|
+Ashlin Babu|ashlin@|123|Admin|1234567890|Active|
+Akhil|akhil@|123|Engineer|1234567890|Inactive|S01,S04,|
+Amal|amal@'|123|Engineer|1234567890|Active|S01,|
+Neeraj|neeraj@|123|Owner|0987654321|Active|

@@ -9,15 +9,16 @@ using namespace std;
 class Site
 {
 private:
-	string m_owner,m_location,m_engineer, m_id,m_siteName;
+	string m_owner, m_location, m_engineer, m_id, m_siteName, m_status;;
 	float m_area;
 	int m_phase;
 	Status status;
 	static int m_counter;
+	bool m_isActive;
 public:
-	Site() :m_id{}, m_owner{}, m_location{}, m_engineer{}, m_area{}, m_phase{} {}
+	Site() :m_id{}, m_owner{}, m_location{}, m_engineer{}, m_area{}, m_phase{}, m_status{} {};
 	Site(string siteName,string location, float area, string owner,int phase);
-	Site(string siteName, string location, float area, string owner, int phase,string engineerName);
+	Site(string siteName, string location, float area, string owner, int phase,string engineerName,string status);
 	void setEngineer(string name);
 	string getOwner();
 	string getLocation();
@@ -29,4 +30,6 @@ public:
 	void updateSiteStatus(string message);
 	string getSiteStatusMessage();
 	void setPhase(int phase);
+	void deactiveSite();
+	bool isActiveSite();
 };

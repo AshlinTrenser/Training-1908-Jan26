@@ -1,9 +1,8 @@
-﻿  Admin.cpp
-  Engineer.cpp
-  FileManager.cpp
-  Site.cpp
-  SiteTrackerController.cpp
-  Status.cpp
+﻿  SiteTrackerController.cpp
   Trenser.SiteTracker.cpp
+C:\Users\1908\Desktop\Trenser.SiteTracker\Training-1908-Jan26\Trenser.SiteTracker\SiteTrackerController.cpp(189,31): error C2039: 'getId': is not a member of 'Owner'
+      C:\Users\1908\Desktop\Trenser.SiteTracker\Training-1908-Jan26\Trenser.SiteTracker\Owner.h(7,7):
+      see declaration of 'Owner'
+  
+C:\Users\1908\Desktop\Trenser.SiteTracker\Training-1908-Jan26\Trenser.SiteTracker\SiteTrackerController.cpp(190,3): error C2143: syntax error: missing ';' before '}'
   Generating Code...
-  Trenser.SiteTracker.vcxproj -> C:\Users\Lenovo\OneDrive\Desktop\Trenser\Training-1908-Jan26\Trenser.SiteTracker\x64\Debug\Trenser.SiteTracker.exe

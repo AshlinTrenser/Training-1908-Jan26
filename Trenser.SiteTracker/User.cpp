@@ -15,3 +15,15 @@ string User::getName()
 {
 	return m_name;
 }
+string User::getPhone()
+{
+	return m_phone;
+}
+bool User::isActive()
+{
+	return m_isActive;
+}
+void User::deactive()
+{
+	m_isActive = false;
+}

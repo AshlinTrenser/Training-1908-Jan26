@@ -1,4 +1,5 @@
-S01|Site1|Neeraj|kollam|akhil|23|1
-S02|Site2|Amal|tvm|akhil|56|2
-S03|Site3|meera|klm|Not assigned Engineer yet|23|1
-S04|asd|meera|asd|Not assigned Engineer yet|0|1
+S01|site1|neeraj|kollam|Amal|23|1|Active
+S02|site2|Manu|tvm|Not assigned Engineer yet|45|2|Active
+S03|site2|Manu|tvm|Not assigned Engineer yet|45|2|Active
+S04|site3|Neeraj|ptr|Akhil|45|1|Active
+S05|site4|neeraj|tvmm|Not assigned Engineer yet|23|1|Active

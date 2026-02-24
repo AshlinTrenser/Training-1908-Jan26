@@ -30,13 +30,19 @@
 	{
 		m_fileManager->loadUser(m_user,m_admin);
 		m_fileManager->loadSite(m_admin.getSite());
-		//m_fileManager->loadSiteStatus();//error
+		m_fileManager->loadSiteStatus(m_admin.getSite());
+		m_fileManager->loadWorker(m_engineer);
+		m_fileManager->loadTask(m_engineer);
+		m_fileManager->loadMaterial(m_engineer);
 	}
 	void SiteTrackerController::saveToFile()
 	{
 		m_fileManager->saveUser(m_user);
 		m_fileManager->saveSite(m_admin.getSite());
-		//m_fileManager->saveSiteStatus();//error
+		m_fileManager->saveSiteStatus(m_admin.getSite());
+		m_fileManager->saveWorker(m_engineer);
+		m_fileManager->saveTask(m_engineer);
+		m_fileManager->saveMaterial(m_engineer);
 	}
 	void SiteTrackerController::controllerMenu()
 	{
@@ -103,9 +109,9 @@
 		system("cls");
 		cout << "\nAdmin: " << name << endl;
 		int choice = 1;
-		while (choice != 10)
+		while (choice != 14)
 		{
-			cout << "\n1.Add new Site\n2.Add Engineers\n3.View Site\n4.View Engineers\n5.View Site Status\n6.Assign Engineer to Site\n7.Add Task\n8.Delete Site\n9.View Task\n10.Logout\n ";
+			cout << "\n1.Add new Site\n2.Add Engineers\n3.View Site\n4.View Engineers\n5.View Site Status\n6.Assign Engineer to Site\n7.Add Task\n8.Delete Site\n9.View Task\n10.View all workers\n11.Update Task Status\n12.Delete Engineer\n13.Delete Owner\n14.Logout\n ";
 			choice = m_exception.checker();
 			switch (choice)
 			{
@@ -128,15 +134,27 @@
 				assignEngineerToSite();
 				break;
 			case 7:
-				addTask();
+				addTaskByAdmin();
 				break;
 			case 8:
 				deleteSite();
 				break;
 			case 9:
-				viewTask();
+				viewTaskByAdmin();
 				break;
 			case 10:
+				viewWorkerByAdmin();
+				break;
+			case 11:
+				updateTaskStatus();
+				break;
+			case 12:
+				deleteEngineer();
+				break;
+			case 13:
+				deleteOwner();
+				break;
+			case 14:
 				break;
 			default:
 				cout << "Invalid input! try again";
@@ -144,14 +162,184 @@
 			}
 		}
 	}
+	void SiteTrackerController::deleteOwner()
+	{
+		string ownerName,ownerId;
+		cout << "\nEnter the name of owner to delete: ";
+		cin >> ownerName;
+		vector<Owner*> Owners;
+		for (auto user : m_user)
+		{
+			if (user->getUserType() == "Owner")
+			{
+				Owner* owner = dynamic_cast<Owner*>(user);
+				if (owner->getName() == ownerName && owner->isActive())
+				{
+					Owners.push_back(owner);
+				}
+			}
+		}
+		if (Owners.empty()) 
+		{
+			cout << "\nNo active owner found with that name!";
+			return;
+		}
+		for (auto owner : Owners)
+		{
+			cout<<"Owner ID :"<<owner->getId()//set ownerID.
+		}
+	}
+	void SiteTrackerController::deleteEngineer()
+	{
+		system("cls");
+		string engineerName;
+		cout << "\nName of Engineer to delete: ";
+		cin.ignore();
+		getline(cin, engineerName);
+		vector<Engineer*> engineers = m_admin.findEngineersByName(engineerName);
+		if (engineers.empty()) 
+		{
+			cout << "\nNo engineer found with this name\n";
+			return;
+		}
+		cout << "\n---Engineers List---\n\n";
+		for (auto engineer : engineers)
+		{
+			vector<string> assignedSite = engineer->getSiteId();
+			cout << "ID: " << engineer->getId() << " | Name: " << engineer->getName() << " | Phone: " << engineer->getPhone();
+			for (auto site : assignedSite)
+			{
+				cout << site << " ";
+			}
+			cout << "\n\n";
+		}
+		cout << "\nEngineer ID to delete: ";
+		cin >> m_engineerID;
+		bool result = m_admin.deleteEngineer(m_engineerID,m_admin.getEngineersList());
+		if (result)
+		{
+			cout << "\n\nDeleted Successfully!\n\n";
+		}
+	}
+
+	void SiteTrackerController::deleteSite()
+	{
+		system("cls");
+		cout << "\nEnter the site ID to delete: ";
+		cin >> m_id;
+		bool isDeleted = m_admin.deleteSite(m_id, m_admin.getTask());
+		if (isDeleted) { cout << "\n\nDeleted Successfully!\n\n"; }
+	}
+	bool SiteTrackerController::isUserNameExist(string username)
+	{
+		for (auto user : m_user)
+		{
+			if (user->getUsername() == username)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+	void SiteTrackerController::assignEngineerToSite()
+	{
+		system("cls");
+		string siteName, engineerName;
+		cout << "\nEnter Site Name: ";
+		cin >> siteName;
+		vector<Site*> sites = m_admin.findSitesByName(siteName);
+		if (sites.empty())
+		{
+			cout << "\nNo site found with this name\n";
+			return;
+		}
+		cout << "\nMatching Sites:\n";
+		for (auto site : sites)
+		{
+			cout << "ID: " << site->getId() << " | Location: " << site->getLocation() << " | Owner: " << site->getOwner() << endl;
+		}
+		cout << "\nEnter Engineer Name: ";
+		cin.ignore();
+		getline(cin, engineerName);
+		vector<Engineer*> engineers = m_admin.findEngineersByName(engineerName);
+		if (engineers.empty())
+		{
+			cout << "\nNo engineer found with this name\n";
+			return;
+		}
+		cout << "\nMatching Engineers:\n";
+		for (auto engineer : engineers)
+		{
+			cout << "ID: " << engineer->getId() << " | Name: " << engineer->getName() << " | Phone: " << engineer->getPhone() << endl;
+		}
+		cout << "\nEnter the Site ID  : ";
+		cin >> m_siteId;
+		cout << "Enter the Engineer ID: ";
+		cin >> m_engineerID;
+		cout << endl;
+		string result = m_admin.assignEngineerToSite(m_siteId, m_engineerID);
+		cout << result << endl << endl;
+	}
+	void SiteTrackerController::viewTaskByAdmin()
+	{
+		system("cls");
+		vector<Task*> task = m_engineer.displayTask();
+		if (task.empty())
+		{
+			cout << "\nNo Task Added!\n\n";
+			return;
+		}
+		cout << "\n---Task Details---\n";
+		for (auto details : task)
+		{
+			cout << "Task ID         : " << details->getId() << endl;
+			cout << "Task Description: " << details->getDescription() << endl;
+			cout << "Task dead line  : " << details->getDeadline() << endl;
+			cout << "Task status     : " << details->getStatus() << endl;
+			cout << "Site Id         : " << details->getSiteID() << endl << endl;
+		}
+	}
+	void SiteTrackerController::addTaskByAdmin()
+	{
+		cout << "Task Description: ";
+		cin.ignore();
+		getline(cin, m_description);
+		cout << "Dead Line       : ";
+		cin >> m_deadline;
+		cout << "Site ID         :";
+		cin >> m_siteId;
+		cout << "Status          : ";
+		cin.ignore();
+		getline(cin, m_status);
+		m_engineer.addTask(m_description, m_deadline, m_status, m_siteId);
+		return;
+	}
+	void SiteTrackerController::viewWorkerByAdmin()
+	{
+		vector<Worker*> worker = m_engineer.displayWorker();
+		if (worker.empty())
+		{
+			cout << "\nNo Workers Added\n";
+			return;
+		}
+		cout << "\n---Worker Details---\n";
+		for (auto user : worker)
+		{
+			cout << "\nName   : " << user->getName();
+			cout << "\nRole   : " << user->getRole();
+			cout << "\nID     : " << user->getId();
+			cout << "\nSite ID: " << user->getSiteID();
+			cout << "\nAge    : " << user->getAge() << endl;
+	    }
+	}
 	void SiteTrackerController::engineerMenu(string name)
 	{
 		system("cls");
 		cout << "\nEngineer: " << name << endl;
 		int choice = 1;
-		while (choice != 11)
+		while (choice != 10)
 		{
-			cout << "\n1.Add workers\n2.Add Site status\n3.Add Materials\n4.Add Task\n5.View workers\n6.View site status\n7.View Materials\n8.View Task\n9.Update Site Phase\n10.Update Task Status\n11.Logout\n";
+			cout << "\n1.Add workers\n2.Add Site status\n3.Add Materials\n4.Add Task\n5.View workers\n6.View site status\n7.View Materials\n8.View Task\n9.Update Site Phase\n10.Logout\n";
 			choice = m_exception.checker();
 			switch (choice)
 			{
@@ -168,13 +356,13 @@
 				addTask();
 				break;
 			case 5:
-				viewWorkers();//
+				viewWorkers();
 				break;
 			case 6:
 				viewSiteStatus();
 				break;
 			case 7:
-				viewMaterials();//
+				viewMaterials();
 				break;
 			case 8:
 				viewTask();
@@ -183,9 +371,6 @@
 				updateSitePhase();
 				break;
 			case 10:
-				updateTaskStatus();
-				break;
-			case 11:
 				break;
 			default:
 				cout << "Invalid input! try again";
@@ -195,6 +380,11 @@
 	}
 	bool SiteTrackerController::emailValidation(string email)
 	{
+		if (isUserNameExist(email))
+		{
+			cout << "\nUsername is already exists!";
+			return false;
+		}
 		int index = 0;
 		while (email[index] != '\0')
 		{
@@ -262,8 +452,7 @@
 		if (!m_flag) { return; }
 		cout << "\n1.Admin\n2.Owner\n\nUser Type: ";
 		cin >> m_type;
-		
-		if (m_type == 1) { m_user.push_back(new Admin(m_name, m_phone, m_username, m_password)); }
+		if (m_type == 1) { m_user.push_back(new Admin(m_name, m_phone, m_username, m_password,"Active")); }
 		if (m_type == 2) { m_user.push_back(new Owner(m_name, m_phone, m_username, m_password)); }
 	}
 	void SiteTrackerController::loginUser()
@@ -282,6 +471,11 @@
 		{
 			if ((*iterator)->getUsername() == m_username && ((*iterator)->getPassword() == m_password))
 			{
+				if (!(*iterator)->isActive()) 
+				{
+					cout << "User has been deleted from Admin.";
+					return; 
+				}
 				m_currentUser = *iterator;
 				string type=(*iterator)->menu();
 				if (type == "Owner")
@@ -314,23 +508,69 @@
 	}
 	void SiteTrackerController::updateSitePhase()
 	{
-		viewSite();
-		cout << "Enter the Site ID: ";
-		cin >> m_id;
+		system("cls");
+		Engineer* engineer = dynamic_cast<Engineer*>(m_currentUser);
+		if (!engineer)
+		{
+			cout << "Access denied\n";
+			return;
+		}
+		vector<string> sites = engineer->getAssignedSites();
+		if (sites.empty())
+		{
+			cout << "Site is not assigned\n";
+			return;
+		}
+		cout << "\nAssigned Sites:\n";
+		for (string id : sites)
+		{
+			cout << id << endl;
+		}
+		string selectedSite;
+		cout << "\nEnter site ID: ";
+		cin >> selectedSite;
+		if (!engineer->hasSite(selectedSite))
+		{
+			cout << "Invalid site\n";
+			return;
+		}
 		cout << "Phase            : ";
 		cin >> m_phase;
-		string result= m_engineer.updateSitePhase(m_id, m_phase,m_admin.getSite());
+		string result= m_engineer.updateSitePhase(selectedSite, m_phase,m_admin.getSite());
 		cout <<endl<< result<<endl<<endl;
 	}
 	void SiteTrackerController::addSiteStatus()
 	{
 		system("cls");
-		cout << "\nEnter the site ID: ";
-		cin >> m_siteId;
+		Engineer* engineer = dynamic_cast<Engineer*>(m_currentUser);
+		if (!engineer)
+		{
+			cout << "Access denied\n";
+			return;
+		}
+		vector<string> sites = engineer->getAssignedSites();
+		if (sites.empty())
+		{
+			cout << "Site is not assigned\n";
+			return;
+		}
+		cout << "\nAssigned Sites:\n";
+		for (string id : sites)
+		{
+			cout << id << endl;
+		}
+		string selectedSite;
+		cout << "\nEnter site ID: ";
+		cin >> selectedSite;
+		if (!engineer->hasSite(selectedSite))
+		{
+			cout << "Invalid site\n";
+			return;
+		}
 		cout << "\nEnter the ReMark : ";
 		cin.ignore();
 		getline(cin, m_message);
-		string result= m_engineer.addSiteStatus(m_siteId,m_message,m_admin.getSite());
+		string result= m_engineer.addSiteStatus(selectedSite,m_message,m_admin.getSite());
 		cout << "\n" << result << "\n\n";
 	}
 	void SiteTrackerController::viewSiteStatus()
@@ -383,6 +623,31 @@
 	void SiteTrackerController::addTask()
 	{
 		system("cls");
+		Engineer* engineer = dynamic_cast<Engineer*>(m_currentUser);
+		if (!engineer)
+		{
+			cout << "Access denied\n";
+			return;
+		}
+		vector<string> sites = engineer->getAssignedSites();
+		if (sites.empty())
+		{
+			cout << "Site is not assigned\n";
+			return;
+		}
+		cout << "\nAssigned Sites:\n";
+		for (string id : sites)
+		{
+			cout << id << endl;
+		}
+		string selectedSite;
+		cout << "\nEnter site ID: ";
+		cin >> selectedSite;
+		if (!engineer->hasSite(selectedSite))
+		{
+			cout << "Invalid site\n";
+			return;
+		}
 		cout << "Task Description: ";
 		cin.ignore();
 		getline(cin, m_description);
@@ -391,20 +656,37 @@
 		cout << "Status          : ";
 		cin.ignore();
 		getline(cin, m_status);
-		cout << "Site ID         : ";
-		cin >> m_siteId;
-		bool found = m_engineer.checkSiteID(m_siteId, m_admin.getSite());
-		if (!found)
-		{
-			cout << "\nThe Site Id is NOT in your database!\n\n";
-			return;
-		}
-		m_engineer.addTask( m_description, m_deadline, m_status,m_siteId);
+		m_engineer.addTask( m_description, m_deadline, m_status, selectedSite);
 		return;
 	}
 	void SiteTrackerController::viewTask()
 	{
 		system("cls");
+		Engineer* engineer = dynamic_cast<Engineer*>(m_currentUser);
+		if (!engineer)
+		{
+			cout << "Access denied\n";
+			return;
+		}
+		vector<string> sites = engineer->getAssignedSites();
+		if (sites.empty())
+		{
+			cout << "Site is not assigned\n";
+			return;
+		}
+		cout << "\nAssigned Sites:\n";
+		for (string id : sites)
+		{
+			cout << id << endl;
+		}
+		string selectedSite;
+		cout << "\nEnter site ID: ";
+		cin >> selectedSite;
+		if (!engineer->hasSite(selectedSite))
+		{
+			cout << "Invalid site\n";
+			return;
+		}
 		vector<Task*> task = m_engineer.displayTask();
 		if (task.empty())
 		{
@@ -414,33 +696,78 @@
 		cout << "\n---Task Details---\n";
 		for (auto details : task)
 		{
-			cout << "Task ID         : " << details->getId()<<endl;
-			cout << "Task Description: " << details->getDescription()<<endl;
-			cout << "Task dead line  : " << details->getDeadline()<<endl;
-			cout << "Task status     : " << details->getStatus() << endl;
-			cout << "Site Id         : " << details->getSiteID() << endl << endl;
+			if(selectedSite== details->getSiteID())
+			{
+				cout << "Task ID         : " << details->getId() << endl;
+				cout << "Task Description: " << details->getDescription() << endl;
+				cout << "Task dead line  : " << details->getDeadline() << endl;
+				cout << "Task status     : " << details->getStatus() << endl;
+				cout << "Site Id         : " << details->getSiteID() << endl << endl;
+			}
 		}
 	}
 	void SiteTrackerController::addMaterialToSite()
 	{
 		system("cls");
-		cout << "\n Materials Name: ";
-		cin >> m_name;
-		cout << "Site ID          : ";
-		cin >> m_siteId;
-		bool found = m_engineer.checkSiteID(m_siteId, m_admin.getSite());
-		if (!found)
+		Engineer* engineer = dynamic_cast<Engineer*>(m_currentUser);
+		if (!engineer)
 		{
-			cout << "\nThe Site Id is NOT in your database!\n\n";
+			cout << "Access denied\n";
 			return;
 		}
+		vector<string> sites = engineer->getAssignedSites();
+		if (sites.empty())
+		{
+			cout << "Site is not assigned\n";
+			return;
+		}
+		cout << "\nAssigned Sites:\n";
+		for (string id : sites)
+		{
+			cout << id << endl;
+		}
+		string selectedSite;
+		cout << "\nEnter site ID: ";
+		cin >> selectedSite;
+		if (!engineer->hasSite(selectedSite))
+		{
+			cout << "Invalid site\n";
+			return;
+		}
+		cout << "\n Materials Name: ";
+		cin >> m_name;
 		cout << "Quantity         : ";
 		cin >> m_quantity;
-		m_engineer.addMetrial(m_name, m_siteId, m_quantity);
+		m_engineer.addMetrial(m_name, selectedSite, m_quantity);
 	}
 	void  SiteTrackerController::viewMaterials()
 	{
 		system("cls");
+		Engineer* engineer = dynamic_cast<Engineer*>(m_currentUser);
+		if (!engineer)
+		{
+			cout << "Access denied\n";
+			return;
+		}
+		vector<string> sites = engineer->getAssignedSites();
+		if (sites.empty())
+		{
+			cout << "Site is not assigned\n";
+			return;
+		}
+		cout << "\nAssigned Sites:\n";
+		for (string id : sites)
+		{
+			cout << id << endl;
+		}
+		string selectedSite;
+		cout << "\nEnter site ID: ";
+		cin >> selectedSite;
+		if (!engineer->hasSite(selectedSite))
+		{
+			cout << "Invalid site\n";
+			return;
+		}
 		vector<Material*> material = m_engineer.displayMatrial();
 		if (material.empty())
 		{
@@ -450,15 +777,43 @@
 		cout << "\n---Materials Details---\n";
 		for (auto details : material)
 		{
-			cout << "\nMaterial Name: " << details->getName();
-			cout << "\nMaterial ID  : " << details->getId();
-			cout << "\nSite ID      : " << details->getSiteID();
-			cout << "\nQuantity     : " << details->getQuantity() << endl;
+			if(selectedSite== details->getSiteID())
+			{
+				cout << "\nMaterial Name: " << details->getName();
+				cout << "\nMaterial ID  : " << details->getId();
+				cout << "\nSite ID      : " << details->getSiteID();
+				cout << "\nQuantity     : " << details->getQuantity() << endl;
+			}
 		}
 	}
 	void SiteTrackerController::viewWorkers()
 	{
 		system("cls");
+		Engineer* engineer = dynamic_cast<Engineer*>(m_currentUser);
+		if (!engineer)
+		{
+			cout << "Access denied\n";
+			return;
+		}
+		vector<string> sites = engineer->getAssignedSites();
+		if (sites.empty())
+		{
+			cout << "Site is not assigned\n";
+			return;
+		}
+		cout << "\nAssigned Sites:\n";
+		for (string id : sites)
+		{
+			cout << id << endl;
+		}
+		string selectedSite;
+		cout << "\nEnter site ID: ";
+		cin >> selectedSite;
+		if (!engineer->hasSite(selectedSite))
+		{
+			cout << "Invalid site\n";
+			return;
+		}
 		cout << "\n---Worker Details---\n";
 		vector<Worker*> worker = m_engineer.displayWorker();
 		if (worker.empty())
@@ -468,44 +823,44 @@
 		}
 		for (auto user : worker)
 		{
-			cout << "\nName   : " << user->getName();
-			cout << "\nRole   : " << user->getRole();
-			cout << "\nID     : " << user->getId();
-			cout << "\nSite ID: " << user->getSiteID();
-			cout << "\nAge    : " << user->getAge()<<endl;
+			if (user->getSiteID() == selectedSite)
+			{
+				cout << "\nName   : " << user->getName();
+				cout << "\nRole   : " << user->getRole();
+				cout << "\nID     : " << user->getId();
+				cout << "\nSite ID: " << user->getSiteID();
+				cout << "\nAge    : " << user->getAge() << endl;
+			}
 		}
 	}
 	void SiteTrackerController::addWorkers()
 	{
 		system("cls");
-		Engineer* eng = dynamic_cast<Engineer*>(m_currentUser);
-		if (!eng)
+		Engineer* engineer = dynamic_cast<Engineer*>(m_currentUser);
+		if (!engineer)
 		{
 			cout << "Access denied\n";
 			return;
 		}
-		vector<string> sites = eng->getAssignedSites();
-
+		vector<string> sites = engineer->getAssignedSites();
 		if (sites.empty())
 		{
 			cout << "Site is not assigned\n";
 			return;
 		}
-
 		cout << "\nAssigned Sites:\n";
 		for (string id : sites)
+		{
 			cout << id << endl;
-
+		}
 		string selectedSite;
 		cout << "\nEnter site ID: ";
 		cin >> selectedSite;
-
-		if (!eng->hasSite(selectedSite))
+		if (!engineer->hasSite(selectedSite))
 		{
 			cout << "Invalid site\n";
 			return;
 		}
-
 		cout << "Worker Name : ";
 		cin.ignore();
 		getline(cin, m_name);
@@ -513,9 +868,7 @@
 		cin >> m_role;
 		cout << "Worker Age  : ";
 		cin >> m_age;
-		cout << "Site ID     : ";
-		cin >> m_siteId;
-		m_engineer.addWorker(m_name, m_role, m_age, m_siteId);
+		m_engineer.addWorker(m_name, m_role, m_age, selectedSite);
 	}
 	void SiteTrackerController::viewEngineer()
 	{
@@ -529,15 +882,18 @@
 		cout << "\n---Engineer List---\n";
 		for (auto user : engineerList)
 		{
-			cout << "Engineer ID              : " << user->getId()<<endl;
-			cout << "Engineer Name            : " << user->getName()<<endl;
-			cout << "Engineer Phone           : " << user->getPhone()<<endl;
-			cout << "Engineer Assigned Site ID: ";
-			for (const auto& id : user->getSiteId())
+			if(user->isActive()==true)
 			{
-				cout << id << ",";
+				cout << "Engineer ID              : " << user->getId() << endl;
+				cout << "Engineer Name            : " << user->getName() << endl;
+				cout << "Engineer Phone           : " << user->getPhone() << endl;
+				cout << "Engineer Assigned Site ID: ";
+				for (const auto& id : user->getSiteId())
+				{
+					cout << id << ",";
+				}
+				cout << "\n\n\n";
 			}
-			cout << "\n\n\n";
 		}
 	}
 	void SiteTrackerController::viewSite()
@@ -552,56 +908,19 @@
 		cout << "\n---Sites List----\n";
 		for (auto site : sites)
 		{
-			cout << "\nSite ID            : " << site->getId();
-			cout << "\nLocation           : " << site->getLocation();
-			cout << "\nArea of Square feet: " << site->getArea();
-			cout << "\nOwner Name         : " << site->getOwner();
-			cout << "\nSite Phase         : " << site->getPhase();
-			cout << "\nEngineer           : " << site->getEngineer() << endl << endl<<endl;
+			if (site->isActiveSite() == true)
+			{
+				cout << "\nSite ID            : " << site->getId();
+				cout << "\nSite Name          : " << site->getSiteName();
+				cout << "\nLocation           : " << site->getLocation();
+				cout << "\nArea of Square feet: " << site->getArea();
+				cout << "\nOwner Name         : " << site->getOwner();
+				cout << "\nSite Phase         : " << site->getPhase();
+				cout << "\nEngineer           : " << site->getEngineer() << endl << endl << endl;
+			}
 		}
 	}
-	void SiteTrackerController::assignEngineerToSite()
-	{
-		system("cls");
-		string siteName, engineerName;
 
-		cout << "\nEnter Site Name: ";
-		cin >> siteName;
-
-		vector<Site*> sites = m_admin.findSitesByName(siteName);
-
-		if (sites.empty())
-		{
-			cout << "\nNo site found with this name\n";
-			return;
-		}
-
-		cout << "\nMatching Sites:\n";
-		for (auto s : sites)
-		{
-			cout << "ID: " << s->getId() << " | Location: " << s->getLocation() << " | Owner: " << s->getOwner() << endl;
-		}
-		cout << "\nEnter Engineer Name: ";
-		cin >> engineerName;
-		vector<Engineer*> engineers = m_admin.findEngineersByName(engineerName);
-		if (engineers.empty())
-		{
-			cout << "\nNo engineer found with this name\n";
-			return;
-		}
-		cout << "\nMatching Engineers:\n";
-		for (auto e : engineers)
-		{
-			cout << "ID: " << e->getId()<< " | Name: " << e->getName()<< " | Phone: " << e->getPhone() << endl;
-		}
-		cout << "\nEnter the Site ID  : ";
-		cin >> m_siteId;
-		cout << "Enter the Engineer ID: ";
-		cin >> m_engineerID;
-		cout << endl;
-		string result= m_admin.assignEngineerToSite(m_siteId, m_engineerID);
-		cout << result<<endl<<endl;
-	}
 	void SiteTrackerController::addSite()
 	{
 		system("cls");
@@ -636,15 +955,4 @@
 		if (!m_flag) { return; }
 		Engineer* engineer = m_admin.createEngineer(m_name, m_phone, m_username, m_password);
 		m_user.push_back(engineer);
-	}
-	void SiteTrackerController::deleteSite()
-	{
-		system("cls");
-		cout << "\nEnter the site ID to delete: ";
-		cin >> m_id;
-		bool isDeleted = m_admin.deleteSite(m_id);
-		if (isDeleted)
-		{
-			cout << "\n\nDeleted Successfully!\n\n";
-		}
 	}

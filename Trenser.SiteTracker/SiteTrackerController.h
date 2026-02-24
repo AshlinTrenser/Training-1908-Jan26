@@ -34,6 +34,9 @@ public:
 	void addUser();
 	void loginUser();
 	void adminMenu(string name);
+	void viewTaskByAdmin();
+	void addTaskByAdmin();
+	void viewWorkerByAdmin();
 	void ownerMenu(string name);
 	void engineerMenu(string name);
 	void addSite();
@@ -56,6 +59,8 @@ public:
 	bool emailValidation(string email);
 	bool phoneValidation(string phone);
 	bool passwordValidation(string password,string re_password);
-
+	void deleteEngineer();
+	bool isUserNameExist(string username);
+	void deleteOwner();
 };
 
