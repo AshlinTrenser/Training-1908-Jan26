@@ -1,6 +1,6 @@
 #include "Worker.h"
 int Worker::m_counter = 1;
-Worker::Worker(string name, string role, int age, string siteId)
+Worker::Worker(string name, string role, int age, string siteId, bool isActive)
 {
 	if (m_counter < 10)
 	{
@@ -15,6 +15,22 @@ Worker::Worker(string name, string role, int age, string siteId)
 	m_role = role;
 	m_age = age;
 	m_siteId = siteId;
+	if (isActive)
+	{
+		m_isActive = true;
+	}
+	else
+	{
+		m_isActive = false;
+	}
+}
+bool Worker::isActive()
+{
+	return m_isActive;
+}
+void Worker::deactive()
+{
+	m_isActive = false;
 }
 string Worker::getName()
 {

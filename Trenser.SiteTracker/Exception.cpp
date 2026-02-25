@@ -7,7 +7,7 @@ int Exception::checker()
 	{
 		try
 		{
-			cout << "Enter the choice: ";
+			cout << "\nEnter the choice: ";
 			if (!(cin >> choice))	
 			{
 				throw runtime_error(" Invalid input !");

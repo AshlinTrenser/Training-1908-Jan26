@@ -22,7 +22,6 @@ public:
 	string getName();
 	string getPhone();
 	string menu() override;
-	string getSiteId();
 	vector<string> getSiteIds();
 	void addSite(string id);
 };

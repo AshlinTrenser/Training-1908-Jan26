@@ -20,7 +20,6 @@ private:
 	string m_name;
 	string m_phone,m_id;
 	vector<string> m_siteId;
-	//bool m_isActive;
 public:
 	Engineer()=default;
 	Engineer(string name, string phone, string username, string password);
@@ -32,6 +31,7 @@ public:
 	string menu() override;
 	void setSiteId(string id);
 	void addWorker(string name, string role, int age, string siteID);
+	void addWorker(string name, string role, int age, string siteID, string isActive);
 	vector<Worker*> displayWorker();
 	void addMetrial(string name, string siteID, int quantity);
 	vector<Material*> displayMatrial();
@@ -45,8 +45,6 @@ public:
 	vector<string> getAssignedSites();
 	void addSite(string id);
 	bool hasSite(string siteId);
-	//bool isActive();
-	//void deactive();
 	~Engineer();
 };
 

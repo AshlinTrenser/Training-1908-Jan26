@@ -23,7 +23,6 @@ void FileManager::loadUser(vector<User*>& users, Admin& admin)
 		if (m_role == "Admin")
 		{
 			users.push_back(new Admin(m_name, m_phone, m_username, m_password, m_status));
-			cout << m_name << "\n";
 		}
 		else if (m_role == "Engineer")
 		{
@@ -93,7 +92,7 @@ void FileManager::saveUser(vector<User*> users)
 		if (m_role == "Engineer")
 		{
 			auto engineer = dynamic_cast<Engineer*>(user);
-			vector<string> siteIDS = engineer->getSiteId();
+			vector<string> siteIDS = engineer->	getSiteId();
 			for (auto id : siteIDS)
 			{
 				if (id.empty())
@@ -200,7 +199,7 @@ void FileManager::loadWorker(Engineer& engineer)
 	{
 		return;
 	}
-	string name, role, siteId, line, tempAge;
+	string name, role, siteId, line, tempAge,isActive;
 	int age;
 	while (getline(file, line))
 	{
@@ -209,8 +208,9 @@ void FileManager::loadWorker(Engineer& engineer)
 		getline(ss, role, '|');
 		getline(ss, tempAge, '|');
 		getline(ss, siteId, '|');
+		getline(ss, isActive);
 		age = stoi(tempAge);
-		engineer.addWorker(name, role, age, siteId);
+		engineer.addWorker(name, role, age, siteId, isActive);
 	}
 	file.close();
 }
@@ -223,7 +223,9 @@ void FileManager::saveWorker(Engineer& engineer)
 		file << worker->getName() << '|'
 			<< worker->getRole() << '|'
 			<< worker->getAge() << '|'
-			<< worker->getSiteID() << "\n";
+			<< worker->getSiteID() << "|";
+		string status = worker->isActive() ? "Active" : "InActive";
+		file << status << "\n";
 	}
 	file.close();
 }

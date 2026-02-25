@@ -6,11 +6,21 @@ using namespace std;
 #include "SiteTrackerController.h"
 int main()
 {
-	FileManager fileManager;
-	SiteTrackerController siteControl(&fileManager);
-	siteControl.loadFromFiles();
-	siteControl.controllerMenu();
-	siteControl.saveToFile();
+	try
+	{
+		FileManager fileManager;
+		SiteTrackerController siteControl(&fileManager);
+		siteControl.loadFromFiles();
+		siteControl.controllerMenu();
+		siteControl.saveToFile();
+	}
+	catch (const exception& e)
+	{
+		cout << "Exception: " << e.what();
+	}
+	catch (...)
+	{
+		cout << "Unknown exception!";
+	}
 	return 0;
-	//all complete
 }

@@ -57,9 +57,19 @@ vector<string> Engineer::getSiteId()
 	}
 	return m_siteId;
 }
-void Engineer::addWorker( string name, string role, int age, string siteID)
+void Engineer::addWorker(string name, string role, int age, string siteID)
 {
-	worker.push_back(new Worker(name, role, age, siteID));
+	worker.push_back(new Worker(name, role, age, siteID, true));
+}
+
+void Engineer::addWorker( string name, string role, int age, string siteID,string isActive)
+{
+	bool status = false;
+	if (isActive == "Active")
+	{
+		status = true;
+	}
+	worker.push_back(new Worker(name, role, age, siteID,status));
 }
 vector<Worker*> Engineer::displayWorker()
 {
@@ -85,7 +95,7 @@ string Engineer::addSiteStatus(string id,string message,vector<Site*>& sites)
 {
 	for (auto site : sites)
 	{
-		if (site->getId() == id)
+		if (site->getId() == id && site->isActiveSite())
 		{
 			site->updateSiteStatus(message);
 			return "Status Added!";
@@ -120,7 +130,7 @@ bool Engineer::checkSiteID(string id, vector<Site*>& sites)
 {
 	for (auto site : sites)
 	{
-		if (site->getId() == id)
+		if (site->getId() == id && site->isActiveSite())
 		{
 			return true;
 		}

@@ -8,6 +8,7 @@ using namespace std;
 #include "Site.h"
 #include "Status.h"
 #include "Engineer.h"
+#include "Owner.h"
 class Admin:
 	public User
 {
@@ -38,6 +39,7 @@ public:
 	vector<Site*> getSitesByOwner(string ownerName);
 	bool deleteEngineer(string name, vector<Engineer*>& engineers);
 	bool isActiveAdmin();
+	//void deleteWorkers()
 	~Admin();
 };
 

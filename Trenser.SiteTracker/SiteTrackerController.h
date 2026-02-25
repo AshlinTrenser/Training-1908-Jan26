@@ -38,6 +38,7 @@ public:
 	void addTaskByAdmin();
 	void viewWorkerByAdmin();
 	void ownerMenu(string name);
+	void addSiteByAdmin(string name);
 	void engineerMenu(string name);
 	void addSite();
 	void addEngineer();
@@ -61,7 +62,11 @@ public:
 	bool passwordValidation(string password,string re_password);
 	void deleteEngineer();
 	bool isUserNameExist(string username);
+	void deleteWorkers();
 	void deleteOwner();
 	void viewAllOwners();
+	void viewMaterialsByAdmin();
+	void viewAllWorkersByAdmin();
+	void addMaterialToSiteByAdmin();
 };
 

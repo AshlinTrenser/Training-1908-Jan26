@@ -11,12 +11,14 @@ private:
 	string m_workerName, m_role;
 	string m_id, m_siteId;
 	int m_age;
+	bool m_isActive;
 public:
-	Worker(string name, string role, int age, string siteId);
+	Worker(string name, string role, int age, string siteId,bool isActive);
 	string getName();
 	string getRole();
 	string getId();
 	string getSiteID();
 	int getAge();
+	bool isActive();
+	void deactive();
 };
-
