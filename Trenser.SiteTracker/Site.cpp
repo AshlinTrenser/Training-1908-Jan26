@@ -92,7 +92,6 @@ void Site::setPhase(int phase)
 {
 	m_phase = phase;
 }
-
 void Site::deactiveSite()
 {
 	m_isActive = false;

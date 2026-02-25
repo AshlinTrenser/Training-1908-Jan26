@@ -153,7 +153,6 @@ vector<string> Engineer::getAssignedSites()
 {
 	return m_siteId;
 }
-
 void Engineer::addSite(string id)
 {
 	m_siteId.push_back(id);
@@ -166,14 +165,6 @@ bool Engineer::hasSite(string siteId)
 
 	return false;
 }
-//bool Engineer::isActive()
-//{
-//	return m_isActive;
-//}
-//void Engineer::deactive()
-//{
-//	m_isActive = false;
-//}
 Engineer::~Engineer()
 {
 	for (auto worker : worker)

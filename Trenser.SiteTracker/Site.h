@@ -16,7 +16,6 @@ private:
 	static int m_counter;
 	bool m_isActive;
 public:
-	Site() :m_id{}, m_owner{}, m_location{}, m_engineer{}, m_area{}, m_phase{}, m_status{} {};
 	Site(string siteName,string location, float area, string owner,int phase);
 	Site(string siteName, string location, float area, string owner, int phase,string engineerName,string status);
 	void setEngineer(string name);

@@ -18,9 +18,5 @@ int main()
 	{
 		cout << "Exception: " << e.what();
 	}
-	catch (...)
-	{
-		cout << "Unknown exception!";
-	}
 	return 0;
 }

@@ -27,4 +27,3 @@ public:
 	string getUserType();
 	virtual string menu()= 0;
 };
-

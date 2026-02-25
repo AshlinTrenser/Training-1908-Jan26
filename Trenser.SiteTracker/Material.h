@@ -18,4 +18,3 @@ public:
 	string getSiteID();
 	int getQuantity();
 };
-

@@ -8,4 +8,3 @@ class Exception
 public:
 	int checker();
 };
-

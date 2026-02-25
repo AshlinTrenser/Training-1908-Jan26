@@ -62,6 +62,7 @@ void SiteTrackerController::controllerMenu()
 			loginUser();
 			break;
 		case 3:
+			cout << "\n=====Exit=====\n";
 			break;
 		default:
 			cout << "Invalid input! try again\n";
@@ -87,6 +88,7 @@ void SiteTrackerController::ownerMenu(string name)
 			viewSiteStatus(name);
 			break;
 		case 3:
+			cout << "\n=====Exit=====\n";
 			break;
 		default:
 			cout << "Invalid input! try again";
@@ -160,6 +162,7 @@ void SiteTrackerController::adminMenu(string name)
 			deleteWorkers();
 			break;
 		case 19:
+			cout << "\n=====Exit=====\n";
 			break;
 		default:
 			cout << "Invalid input! try again";
@@ -206,6 +209,7 @@ void SiteTrackerController::engineerMenu(string name)
 			updateSitePhase();
 			break;
 		case 10:
+			cout << "\n=====Exit=====\n";
 			break;
 		default:
 			cout << "Invalid input! try again";
@@ -304,7 +308,6 @@ void SiteTrackerController::deleteEngineer()
 		cout << "\n\nDeleted Successfully!\n\n";
 	}
 }
-
 void SiteTrackerController::deleteSite()
 {
 	system("cls");
@@ -507,7 +510,6 @@ bool SiteTrackerController::phoneValidation(string phone)
 	}
 	return true;
 }
-
 void SiteTrackerController::addUser()
 {
 	system("cls");		
@@ -1066,7 +1068,6 @@ void SiteTrackerController::viewSite()
 		}
 	}
 }
-
 void SiteTrackerController::addSite()
 {
 	system("cls");

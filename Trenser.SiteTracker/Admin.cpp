@@ -110,7 +110,6 @@ bool Admin::deleteSite(string id,vector<Task*>& tasks)
 	}
 	return false;
 }
-
 bool Admin::deleteEngineer(string engineerId,vector<Engineer*>& engineers)
 {
 	for (auto iterator = engineers.begin(); iterator != engineers.end(); iterator++)
@@ -140,7 +139,6 @@ vector<Site*> Admin::findSitesByName(string name)
 	}
 	return result;
 }
-
 vector<Engineer*> Admin::findEngineersByName(string name)
 {
 	vector<Engineer*> result;

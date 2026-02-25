@@ -14,4 +14,3 @@ public:
 	string getId();
 	string getMessage();
 };
-

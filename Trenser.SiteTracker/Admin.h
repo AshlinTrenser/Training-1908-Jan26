@@ -39,7 +39,6 @@ public:
 	vector<Site*> getSitesByOwner(string ownerName);
 	bool deleteEngineer(string name, vector<Engineer*>& engineers);
 	bool isActiveAdmin();
-	//void deleteWorkers()
 	~Admin();
 };
 

@@ -10,7 +10,6 @@ using namespace std;
 #include "Exception.h"
 
 class FileManager;
-
 class SiteTrackerController
 {
 private:
@@ -69,4 +68,3 @@ public:
 	void viewAllWorkersByAdmin();
 	void addMaterialToSiteByAdmin();
 };
-
