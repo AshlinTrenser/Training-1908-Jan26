@@ -280,14 +280,14 @@ void FileManager::loadMaterial(Engineer& engineer)
 		getline(ss, siteID, '|');
 		getline(ss, tempQuantity, '|');
 		quantity = stoi(tempQuantity);
-		engineer.addMetrial(name, siteID, quantity);
+		engineer.addMaterial(name, siteID, quantity);
 	}
 	file.close();
 }
 void FileManager::saveMaterial(Engineer& engineer)
 {
 	ofstream file(MATERIAL);
-	vector<Material*> materials = engineer.displayMatrial();
+	vector<Material*> materials = engineer.displayMaterial();
 	for (auto material : materials)
 	{
 		file << material->getId() << '|'

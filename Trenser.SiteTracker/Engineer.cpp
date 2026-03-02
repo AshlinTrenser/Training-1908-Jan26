@@ -75,11 +75,11 @@ vector<Worker*> Engineer::displayWorker()
 {
 	return worker;
 }
-void Engineer::addMetrial(string name, string siteID, int quantity)
+void Engineer::addMaterial(string name, string siteID, int quantity)
 {
 	m_material.push_back(new Material(name, siteID, quantity));
 }
-vector<Material*> Engineer::displayMatrial()
+vector<Material*> Engineer::displayMaterial()
 {
 	return m_material;
 }

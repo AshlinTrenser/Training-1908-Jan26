@@ -33,8 +33,8 @@ public:
 	void addWorker(string name, string role, int age, string siteID);
 	void addWorker(string name, string role, int age, string siteID, string isActive);
 	vector<Worker*> displayWorker();
-	void addMetrial(string name, string siteID, int quantity);
-	vector<Material*> displayMatrial();
+	void addMaterial(string name, string siteID, int quantity);
+	vector<Material*> displayMaterial();
 	void addTask(string description, string deadline, string status, string siteID);
 	vector<Task*> displayTask();
 	string addSiteStatus(string id,string message,vector<Site*>& sites);

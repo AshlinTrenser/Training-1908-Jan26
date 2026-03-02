@@ -818,7 +818,7 @@ void SiteTrackerController::addMaterialToSite()
 	cin >> m_name;
 	cout << "Quantity         : ";
 	cin >> m_quantity;
-	m_engineer.addMetrial(m_name, selectedSite, m_quantity);
+	m_engineer.addMaterial(m_name, selectedSite, m_quantity);
 }
 void SiteTrackerController::addMaterialToSiteByAdmin()
 {
@@ -841,7 +841,7 @@ void SiteTrackerController::addMaterialToSiteByAdmin()
 			cin >> m_name;
 			cout << "Quantity         : ";
 			cin >> m_quantity;
-			m_engineer.addMetrial(m_name, m_siteId, m_quantity);
+			m_engineer.addMaterial(m_name, m_siteId, m_quantity);
 			return;
 		}
 	}
@@ -875,7 +875,7 @@ void SiteTrackerController::viewMaterials()
 		cout << "Invalid site\n";
 		return;
 	}
-	vector<Material*> material = m_engineer.displayMatrial();
+	vector<Material*> material = m_engineer.displayMaterial();
 	if (material.empty())
 	{
 		cout << "\nNo Materials Are Added!";
@@ -896,7 +896,7 @@ void SiteTrackerController::viewMaterials()
 void SiteTrackerController::viewMaterialsByAdmin()
 
 {
-	vector<Material*> material = m_engineer.displayMatrial();
+	vector<Material*> material = m_engineer.displayMaterial();
 	if (material.empty())
 	{
 		cout << "\nNo Materials Are Added!";
